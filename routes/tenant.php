@@ -23,7 +23,15 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
+
     Route::get('/', function () {
         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
     });
+
+    Route::group(['prefix' => 'api'],function () {
+        Route::get('/users', function () {
+            return \App\Models\User::all();
+        });
+    });
+
 });
