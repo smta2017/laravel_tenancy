@@ -9,7 +9,7 @@ use Illuminate\Support\ServiceProvider;
  */
 
 use App\Repositories\Contracts\{
-    // IPost
+     IBase
 };
 
 /**
@@ -17,7 +17,7 @@ use App\Repositories\Contracts\{
  */
 
 use App\Repositories\{     
-    // PostRepository
+    BaseRepository
 };
 
 /**
@@ -32,7 +32,7 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {       
-        // $this->app->bind(IPost::class, PostRepository::class);
+        $this->app->bind(IPost::class, PostRepository::class);
     }
 
     /**
