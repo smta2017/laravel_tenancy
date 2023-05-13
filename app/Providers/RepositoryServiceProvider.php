@@ -9,15 +9,15 @@ use Illuminate\Support\ServiceProvider;
  */
 
 use App\Repositories\Contracts\{
-     IBase
+     IUser
 };
 
 /**
  * Insert use Repositories
  */
 
-use App\Repositories\{     
-    BaseRepository
+use App\Repositories\Eloquent\{     
+    UserRepository
 };
 
 /**
@@ -32,7 +32,7 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {       
-        $this->app->bind(IPost::class, PostRepository::class);
+        $this->app->bind(IUser::class, UserRepository::class);
     }
 
     /**

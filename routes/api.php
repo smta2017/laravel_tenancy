@@ -22,3 +22,6 @@ Route::get('/test', function (Request $request) {
     echo "test api";
     return ;
 });
+
+Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
+    ->except(['create', 'edit']);
