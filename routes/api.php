@@ -22,5 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/send-opt', [RegisterController::class,'sendotp']);
 Route::post('/verify-otp', [RegisterController::class,'verifyotp']);
 
+Route::post('/create-tenant', [RegisterController::class,'createTenant']);
+
 Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
     ->except(['create', 'edit']);

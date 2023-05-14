@@ -18,6 +18,7 @@ return [
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
     'central_domains' => [
+        'saas.test',
         'saas.test', // Add the ones that you use. I use this one with Laravel Valet.
     ],
 

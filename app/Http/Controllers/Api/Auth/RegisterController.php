@@ -24,16 +24,30 @@ class RegisterController extends AppBaseController
         $sender = OTPVerify::verifyOTP($request);
         if (!$sender['success']) {
             return $this->sendError($sender['message']);
+            $this->storePhoneSession($request, false);
         }
+        $this->storePhoneSession($request, true);
         return $this->sendSuccess($sender['message']);
     }
 
-    public function register(Request $request)
+    public function createTenant(Request $request)
     {
-        $central_domain = \config('tenancy.central_domains')[0];
-        $tenant = Tenant::create(['id' => $request->tenant_id]);
-        $tenant->domains()->create(['domain' => $request->tenant_id . '.' . $central_domain]);
+        if (session($request->phone)) {
+            try {
+                $central_domain = config('tenancy.central_domains')[(env('APP_ENV') == 'local') ? 1 : 0];;
+                $tenant = Tenant::create( $request->all() );
+                $tenant->domains()->create(['domain' => $request->id . '.' . $central_domain]);
+                $this->storePhoneSession($request, false);
+                return $this->sendResponse($tenant, 'Tenant Has ben created');
+            } catch (\Throwable $th) {
+                return $this->sendError($th->getMessage());
+            }
+        }
+        return $this->sendError('No verified phone found');
+    }
 
-        return $tenant;
+    public function storePhoneSession(Request $request, bool $status)
+    {
+        session([$request->phone => $status]);
     }
 }
