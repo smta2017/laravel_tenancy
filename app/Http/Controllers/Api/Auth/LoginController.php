@@ -19,7 +19,7 @@ class LoginController extends AppBaseController
         // Attempt to log in the user using the credentials
         if (Auth::attempt($request->only('email', 'password'))) {
             // Generate a new token for the authenticated user
-            $token = $request->user()->createToken('api-token')->plainTextToken;
+            $token = $request->user()->createToken('api-login-token')->plainTextToken;
     
             // Return a JSON response with the token and user details
             return response()->json([
