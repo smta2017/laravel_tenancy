@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
         $tenants = ['foo','bar','sab'];
 
         foreach ($tenants as $value) {
-            if(!Tenant::find($value)->exists()){
+            if(!Tenant::find($value)){
                 $tenant = Tenant::create(['id' => $value]);
                 $tenant->domains()->create(['domain' => $value .'.saas.test']);
             }
