@@ -35,7 +35,7 @@ class DatabaseSeeder extends Seeder
         Tenant::all()->runForEach(function () {
             User::factory(10)->create();
         });
-
+        // $tenant = \App\Models\Tenant::first();
         \App\Models\User::factory(10)->create();
         // \App\Models\Post::create(['title'=> 'test']);
 
