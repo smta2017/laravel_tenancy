@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Repositories\Contracts\IUser;
+use Stancl\Tenancy\Features\UserImpersonation;
 
 /**
  * Class UserAPIController
@@ -17,17 +18,26 @@ class UserAPIController extends AppBaseController
 {
     private $userRepository;
 
-    public function __construct(IUser $userRepo)
-    {
-        $this->userRepository = $userRepo;
+    // public function __construct(IUser $userRepo)
+    // {
+    //     $this->userRepository = $userRepo;
+    // }
+
+
+
+    public function impersonate(Request $request) {
+       return $impersonate = UserImpersonation::makeResponse($request->token);        
     }
+
+
 
     /**
      * Display a listing of the Users.
      * GET|HEAD /users
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
+        return User::all();
         $users = $this->userRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),

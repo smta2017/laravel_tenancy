@@ -3,10 +3,15 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\API\UserAPIController;
+use App\Models\Tenant;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Stancl\Tenancy\Features\UserImpersonation;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use App\Http\Middleware\ImpersonateMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,14 +35,16 @@ Route::middleware([
         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
     });
 
+    //====================================[  A P I  ]==============================================
 
     Route::group(['prefix' => 'api'], function () {
-        Route::post('/login', [LoginController::class, 'login']);
- 
-        Route::group(['middleware' => 'auth:sanctum'], function () {
-          Route::get('/users', function (Request $request) {
-                return \App\Models\User::all();
-            }); 
+
+        Route::post('/impersonate', [UserAPIController::class, "impersonate"]);
+
+        Route::middleware('impersonate')->group(function () {
+            Route::group(['middleware' => 'auth:sanctum'], function () {
+                Route::apiResource('/users', UserAPIController::class);
+            });
         });
     });
 });
