@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Helpers\Helper;
 use App\Helpers\SMS\OTPVerify;
 use App\Http\Controllers\AppBaseController;
 use App\Models\CentralUser;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 
 class RegisterController extends AppBaseController
 {
+    use Helper;
 
     public function sendotp(Request $request)
     {
@@ -52,8 +54,8 @@ class RegisterController extends AppBaseController
                 $user_info = [
                     'role' => 'superadmin',
                     'global_id' => (string) \Str::uuid(),
-                    'name' => $random_time . "_" . $request->name,
-                    'email' => $random_time . "_" . $request->email,
+                    'name' => $tenant['id'] . "_" . $request->name,
+                    'email' => $tenant['id'] . "_" . $request->email,
                     'password' => \Hash::make('password')
                 ];
 
@@ -68,8 +70,8 @@ class RegisterController extends AppBaseController
                 $user_info2 = [
                     'role' => 'superadmin',
                     'global_id' => (string) \Str::uuid(),
-                    'name' => $random_time . "2_" . $request->name,
-                    'email' => $random_time . "2_" . $request->email,
+                    'name' => $tenant['id'] . "2_" . $request->name,
+                    'email' => $tenant['id'] . "2_" . $request->email,
                     'password' => \Hash::make('password')
                 ];
 

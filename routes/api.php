@@ -3,11 +3,12 @@
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\API\UserAPIController;
-use App\Models\Tenant;
 use App\Models\User;
+use Doctrine\Inflector\Rules\Word;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use Nnjeim\World\World;
+use Nnjeim\World\WorldHelper;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,9 +38,48 @@ Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
 
 Route::group(['prefix' => 'tenant'], function () {
     Route::post('login', [LoginController::class, "login"]);
-    Route::get('register', [RegisterController::class, "createTenant"]);
+    Route::post('register', [RegisterController::class, "createTenant"]);
 });
 
+Route::get('country', function () {
+    $action =  World::countries();
+
+    if ($action->success) {
+        $countries = $action->data;
+        //   return $countries;
+    }
+    //================
+    $action =  World::countries([
+        'fields' => 'states',
+        'filters' => [
+            'iso2' => 'DZ',
+        ]
+    ]);
+
+    if ($action->success) {
+        $countries = $action->data;
+        // return $countries;
+    }
+    //==============
+    $WorldHelper = new WorldHelper();
+
+    $action = $WorldHelper->states([
+        'filters' => [
+            'country_id' => 66,
+        ],
+    ]);
+
+    if ($action->success) {
+
+        $states = $action->data;
+        // return $states;
+    }
+    //================
+
+    $WorldHelper = World::getCountryByCode("EGY");
+        return $WorldHelper;
+    
+});
 
 // Route::get('/generattoken/{tenant_id}/{user_id}', function (Request $request) {
 //     $tenant = Tenant::find($request->tenant_id); // Replace this with your way of fetching the tenant.
