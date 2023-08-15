@@ -32,16 +32,11 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        Tenant::all()->runForEach(function () {
-            User::factory(10)->create();
-        });
-        // $tenant = \App\Models\Tenant::first();
-        \App\Models\User::factory(10)->create();
-        // \App\Models\Post::create(['title'=> 'test']);
+        // Tenant::all()->runForEach(function ($tn) {
+        //     User::factory(10)->create();
+        // });
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        \App\Models\CentralUser::factory(10)->create();
+        
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\Auth;
 
+use App\Exceptions\CustomException;
 use App\Helpers\Helper;
 use App\Helpers\SMS\OTPVerify;
 use App\Http\Controllers\AppBaseController;
+use App\Http\Requests\CreateTenantRequest;
 use App\Models\CentralUser;
 use App\Models\Tenant;
 use App\Models\User;
@@ -34,68 +36,58 @@ class RegisterController extends AppBaseController
         return $this->sendSuccess($sender['message']);
     }
 
-    public function createTenant(Request $request)
+    public function createTenant(CreateTenantRequest $request)
     {
-        if (\env("APP_ENV") == "local" || session($request->phone)) {
-            try {
-                $central_domain = config('tenancy.central_domains')[(env('APP_ENV') == 'local') ? 1 : 0];
-                $random_time = substr(\Carbon\Carbon::now()->timestamp, -4);
-                ($request->id == "") ? $request['id'] = \Str::random(3) . "_" . $random_time : '';
-
-                //Create tenant
-                $tenant = Tenant::create($request->all());
-
-                //Create tenant domain
-                $tenant->domains()->create(['domain' => $request->id . '.' . $central_domain]);
-
-                $this->storePhoneSession($request, false);
-                // ========================================================================
-                // Collect user info
-                $user_info = [
-                    'role' => 'superadmin',
-                    'global_id' => (string) \Str::uuid(),
-                    'name' => $tenant['id'] . "_" . $request->name,
-                    'email' => $tenant['id'] . "_" . $request->email,
-                    'password' => \Hash::make('password')
-                ];
-
-                $user = CentralUser::create($user_info);
-
-                tenancy()->initialize($tenant);
-
-                // Create the same user in tenant DB
-                $user = User::create($user_info);
-                //--------------------------------------------------------
-                // Collect user info
-                $user_info2 = [
-                    'role' => 'superadmin',
-                    'global_id' => (string) \Str::uuid(),
-                    'name' => $tenant['id'] . "2_" . $request->name,
-                    'email' => $tenant['id'] . "2_" . $request->email,
-                    'password' => \Hash::make('password')
-                ];
-
-                $user2 = CentralUser::create($user_info2);
-
-                tenancy()->initialize($tenant);
-
-                // Create the same user in tenant DB
-                $user2 = User::create($user_info2);
-
-                // ========================================================================
-                \Auth::login($user);
-
-                $tenant['token'] =  auth()->user()->createToken('first-token')->plainTextToken;
-
-                return $this->sendResponse($tenant, 'Tenant Has created as successfuly');
-            } catch (\Throwable $th) {
-                return $this->sendError($th->getMessage());
-            }
+        if (!session($request->phone) && !Helper::TestedEnv()) {
+            return $this->sendError('Phone Number is not verified.', 422);
         }
+
+        $central_domain = config('tenancy.central_domains')[(Helper::TestedEnv()) ? 1 : 0];
+
+        //Create tenant
+        $tenant = Tenant::create($request->all());
+
+        //Create tenant domain
+        $tenant->domains()->create(['domain' => $request->id . '.' . $central_domain]);
+
+        $this->storePhoneSession($request, false);
+        // ========================================================================
+
+        $user = $this->generateTenantUsers($request, $tenant);
+
+        // ========================================================================
+        \Auth::login($user);
+
+        $tenant['token'] =  auth()->user()->createToken('first-token')->plainTextToken;
+
+        return $this->sendResponse($tenant, 'Tenant has created as successfuly');
+
         return $this->sendError('No verified phone found');
     }
+    
     public function storePhoneSession(Request $request, bool $status)
     {
         session([$request->phone => $status]);
+    }
+
+    public function generateTenantUsers($request, $tenant)
+    {
+        for ($i = 1; $i <= 3; $i++) {
+            $user_info = [
+                'role' => 'superadmin',
+                'global_id' => (string) \Str::uuid(),
+                'name' => $tenant['id'] . $i . "_" . $request->name,
+                'email' => $tenant['id'] . $i . "_" . $request->email,
+                'password' => \Hash::make('password')
+            ];
+
+            CentralUser::create($user_info);
+
+            tenancy()->initialize($tenant);
+
+            // Create the same user in tenant DB
+            $user = User::create($user_info);
+        }
+        return $user;
     }
 }
