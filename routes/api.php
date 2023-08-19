@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\API\UserAPIController;
+use App\Http\Controllers\VerificationController;
 use App\Models\User;
 use Doctrine\Inflector\Rules\Word;
 use Illuminate\Http\Request;
@@ -34,6 +35,9 @@ Route::post('/create-tenant', [RegisterController::class, 'createTenant']);
 
 Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
     ->except(['create', 'edit']);
+
+Route::get('email/verify/{id}',  [VerificationController::class, 'verify'])->name('verification.verify'); // Make sure to keep this as your route name
+Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 //=======================================================================
 
 Route::group(['prefix' => 'tenant'], function () {
@@ -41,6 +45,9 @@ Route::group(['prefix' => 'tenant'], function () {
     Route::post('register', [RegisterController::class, "createTenant"]);
 });
 
+
+
+//--------------------------------------------------------------------------------
 Route::get('country', function () {
     $action =  World::countries();
 

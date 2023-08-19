@@ -7,8 +7,10 @@ use App\Helpers\Helper;
 use App\Helpers\SMS\OTPVerify;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\CreateTenantRequest;
+use App\Jobs\SendTenantVerificationEmail;
 use App\Models\CentralUser;
 use App\Models\Tenant;
+use App\Models\TenantModel;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -53,10 +55,15 @@ class RegisterController extends AppBaseController
         $this->storePhoneSession($request, false);
         // ========================================================================
 
-        $user = $this->generateTenantUsers($request, $tenant);
+        $admin = $this->generateTenantAdmin($request, $tenant);
+
+        // Job Send the verification email to tenant
+        // SendTenantVerificationEmail::dispatch($admin)->onQueue('tenant_verify_email')->delay(now()->subSeconds(5));
+
+        // $last_user = $this->generateTenantUsers($request, $tenant);
 
         // ========================================================================
-        \Auth::login($user);
+        \Auth::login($admin);
 
         $tenant['token'] =  auth()->user()->createToken('first-token')->plainTextToken;
 
@@ -64,17 +71,36 @@ class RegisterController extends AppBaseController
 
         return $this->sendError('No verified phone found');
     }
-    
+
     public function storePhoneSession(Request $request, bool $status)
     {
         session([$request->phone => $status]);
+    }
+
+    public function generateTenantAdmin($request, $tenant)
+    {
+
+        $user_info = [
+            'global_id' => (string) \Str::uuid(),
+            'name' => 'admin',
+            'email' =>  $request->email,
+            'password' => \Hash::make('password')
+        ];
+
+        CentralUser::create($user_info);
+
+        tenancy()->initialize($tenant);
+
+        // Create the same user in tenant DB
+        $user = User::create($user_info);
+
+        return $user;
     }
 
     public function generateTenantUsers($request, $tenant)
     {
         for ($i = 1; $i <= 3; $i++) {
             $user_info = [
-                'role' => 'superadmin',
                 'global_id' => (string) \Str::uuid(),
                 'name' => $tenant['id'] . $i . "_" . $request->name,
                 'email' => $tenant['id'] . $i . "_" . $request->email,

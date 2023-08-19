@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -50,7 +51,6 @@ class CentralUser extends Model implements SyncMaster
             'name',
             'password',
             'email',
-            'role'
         ];
     }
 }

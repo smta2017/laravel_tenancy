@@ -26,8 +26,8 @@ class CreateTenantRequest extends FormRequest
     protected function prepareForValidation()
     {
         if (Helper::TestedEnv() && $this->id == "") {
-            $random_time = substr(\Carbon\Carbon::now()->timestamp, -4);
-            $tenant_id = \Str::random(3) . "_" . $random_time;
+            $random_time = substr(\Carbon\Carbon::now()->timestamp, -3);
+            $tenant_id = \Str::random(2) . "_" . $random_time;
             // Append a parameter to the request data
             $this->merge([
                 'id' => $tenant_id,
@@ -45,6 +45,7 @@ class CreateTenantRequest extends FormRequest
         return [
             'id' => 'required',
             'phone' => 'required|numeric',
+            'email' => 'required|email|unique:tenants'
         ];
     }
 
