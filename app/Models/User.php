@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use Stancl\Tenancy\Contracts\Syncable;
 use Stancl\Tenancy\Database\Concerns\ResourceSyncing;
 
 class User extends Authenticatable implements Syncable
 {
-    use HasApiTokens, HasFactory, Notifiable, ResourceSyncing;
+    use HasApiTokens, HasFactory, Notifiable, ResourceSyncing, HasRoles;
 
     protected $guarded = [];
     public $timestamps = false;
@@ -81,4 +83,10 @@ class User extends Authenticatable implements Syncable
         'name' => 'required'
     ];
 
+
+    public function sendPasswordResetNotification($token)
+    {
+        $url = url(config('app.url') . route('password.reset', ['token' => $token, 'email' => $this->email], false));
+        $this->notify(new CustomResetPasswordNotification($token));
+    }
 }

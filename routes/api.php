@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\API\UserAPIController;
 use App\Http\Controllers\VerificationController;
 use App\Models\User;
@@ -43,8 +44,18 @@ Route::post('email/resend', [VerificationController::class, 'resend'])->name('ve
 Route::group(['prefix' => 'tenant'], function () {
     Route::post('login', [LoginController::class, "login"]);
     Route::post('register', [RegisterController::class, "createTenant"]);
+    
+    Route::group(['prefix' => 'password'], function () {
+        Route::post('/email', [ResetPasswordController::class, 'sendResetLinkEmail']);
+        Route::get('/reset', [ResetPasswordController::class, 'resetPassword']);
+
+        // http://bassel.saas.test/api/password/reset?token=http%3A%2F%2Fsameh.test%2Fapi%2Fpassword%2Freset%3Ftoken%3D572ed3ffb35c100a002dfa737e3f004ffb8862b7577b358f51be1502a98cb014%26email%3Dbassel%2540email.com&email=bassel%40email.com
+
+    });
 });
 
+// Password reset link request routes...
+Route::post('password/reset', 'fack@fack')->name('password.reset');
 
 
 //--------------------------------------------------------------------------------
@@ -84,8 +95,7 @@ Route::get('country', function () {
     //================
 
     $WorldHelper = World::getCountryByCode("EGY");
-        return $WorldHelper;
-    
+    return $WorldHelper;
 });
 
 // Route::get('/generattoken/{tenant_id}/{user_id}', function (Request $request) {

@@ -40,7 +40,7 @@ class Handler extends ExceptionHandler
             // mySql exception handling
             $message = $this->getMySqlError($exception->getCode());
             $message = ($message) ? $message  : $exception->getMessage();
-            // return $this->sendError($message, 422);
+            return $this->sendError($message, 422);
         } else {
             return $this->sendError($exception->getMessage(), 400);
         }

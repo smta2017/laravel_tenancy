@@ -89,6 +89,19 @@ class TenancyServiceProvider extends ServiceProvider
 
             // Fired only when a synced resource is changed in a different DB than the origin DB (to avoid infinite loops)
             Events\SyncedResourceChangedInForeignDatabase::class => [],
+
+            
+            Events\TenancyBootstrapped::class => [
+                function (Events\TenancyBootstrapped $event) {
+                    \Spatie\Permission\PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.' . $event->tenancy->tenant->id;
+                }
+            ],
+            
+            Events\TenancyEnded::class => [
+                function (Events\TenancyEnded $event) {
+                    \Spatie\Permission\PermissionRegistrar::$cacheKey = 'spatie.permission.cache';
+                }
+            ],
         ];
     }
 
