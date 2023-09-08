@@ -12,7 +12,7 @@ class LoginController extends AppBaseController
 
     public function login(LoginTenantRequest $request)
     {
-        // Attempt to log in the user using the credentials
+        // Attempt to log in the CentralUser using the credentials
         if (Auth::attempt($request->only('email', 'password'))) {
 
             $central_user = CentralUser::find($request->user()->id);

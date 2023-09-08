@@ -84,7 +84,7 @@ class RegisterController extends AppBaseController
             'global_id' => (string) \Str::uuid(),
             'name' => 'admin',
             'email' =>  $request->email,
-            'password' => \Hash::make('password')
+            'password' => \Hash::make($request['password'] ?? 'password')
         ];
 
         CentralUser::create($user_info);

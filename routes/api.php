@@ -27,6 +27,10 @@ Route::middleware('auth:sanctum')->post('/user', function (Request $request) {
     return User::all();
 });
 
+Route::get('/csrf-token', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+});
+
 Route::middleware('auth:sanctum')->get('/protected', [UserAPIController::class, 'index']);
 
 Route::post('/send-opt', [RegisterController::class, 'sendotp']);

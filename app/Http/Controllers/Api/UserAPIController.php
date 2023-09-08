@@ -115,4 +115,21 @@ class UserAPIController extends AppBaseController
 
         return $this->sendSuccess('User deleted successfully');
     }
+
+    /**
+     * Display the specified User.
+     * GET|HEAD /users/{id}
+     */
+    public function me(): JsonResponse
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (empty($user)) {
+            return $this->sendError('User not found');
+        }
+
+        return $this->sendResponse($user->toArray(), 'User retrieved successfully');
+    }
+
 }

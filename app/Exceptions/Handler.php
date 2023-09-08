@@ -30,19 +30,21 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        if ($exception instanceof ModelNotFoundException) {
-            return $this->sendError($exception->getMessage());
-        } else if ($exception instanceof MethodNotAllowedHttpException) {
-            return $this->sendError('Method Not Allowed - \n' . $exception->getMessage());
-        } else if ($exception instanceof NotFoundHttpException) {
-            return $this->sendError('Route not found - ' . $exception->getMessage());
-        } else if ($exception instanceof QueryException) {
-            // mySql exception handling
-            $message = $this->getMySqlError($exception->getCode());
-            $message = ($message) ? $message  : $exception->getMessage();
-            return $this->sendError($message, 422);
-        } else {
-            return $this->sendError($exception->getMessage(), 400);
+        if (\env('APP_ENV') != 'local'){
+            if ($exception instanceof ModelNotFoundException) {
+                return $this->sendError($exception->getMessage());
+            } else if ($exception instanceof MethodNotAllowedHttpException) {
+                return $this->sendError('Method Not Allowed - \n' . $exception->getMessage());
+            } else if ($exception instanceof NotFoundHttpException) {
+                return $this->sendError('Route not found - ' . $exception->getMessage());
+            } else if ($exception instanceof QueryException) {
+                // mySql exception handling
+                $message = $this->getMySqlError($exception->getCode());
+                $message = ($message) ? $message  : $exception->getMessage();
+                return $this->sendError($message, 422);
+            } else {
+                return $this->sendError($exception->getMessage(), 400);
+            }
         }
         return parent::render($request, $exception);
     }

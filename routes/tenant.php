@@ -42,6 +42,12 @@ Route::middleware([
 
         Route::group(['middleware' => 'auth:sanctum'], function () {
 
+            Route::get('/users', [UserAPIController::class, 'index']);
+
+
+            Route::group(['prefix' => 'auth'], function () {
+                Route::get('/me', [UserAPIController::class, 'me']);
+            });
 
             // Permissions
             Route::get('/roles-permissions', [RolePermissionController::class, 'index']);
