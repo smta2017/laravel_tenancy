@@ -56,7 +56,7 @@
     },
     {
         "name": "description",
-        "dbType": "string",
+        "dbType": "string:nullable",
         "htmlType": "",
         "searchable": true
     },

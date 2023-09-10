@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreignId('brand_id')->constrained();
             $table->double('tax')->nullable();
             $table->enum('tax_type', ['inc', 'exc'])->default('inc');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->enum('type', ['standerd', 'variable', 'service'])->default('standerd');
             $table->double('cost')->default(0);
             $table->double('price')->default(0);
