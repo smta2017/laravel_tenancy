@@ -1,0 +1,59 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "name",
+        "dbType": "string",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "phone",
+        "dbType": "string",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "country",
+        "dbType": "string",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "city",
+        "dbType": "string",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "email",
+        "dbType": "string",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "zipcode",
+        "dbType": "string",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

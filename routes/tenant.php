@@ -44,6 +44,52 @@ Route::middleware([
 
             Route::get('/users', [UserAPIController::class, 'index']);
 
+            
+
+            Route::resource('suppliers', App\Http\Controllers\API\SupplierAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('customers', App\Http\Controllers\API\CustomerAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('brands', App\Http\Controllers\API\BrandAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('categories', App\Http\Controllers\API\CategoryAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('statuses', App\Http\Controllers\API\StatusAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('units', App\Http\Controllers\API\UnitAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('warehouses', App\Http\Controllers\API\WarehouseAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('products', App\Http\Controllers\API\ProductAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('purchase-statues', App\Http\Controllers\API\PurchaseStatuesAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('purchases', App\Http\Controllers\API\PurchaseAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('purchase-details', App\Http\Controllers\API\PurchaseDetailsAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('sale-statues', App\Http\Controllers\API\SaleStatuesAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('sales', App\Http\Controllers\API\SaleAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('sale-details', App\Http\Controllers\API\SaleDetailAPIController::class)
+                ->except(['create', 'edit']);
+
+
+
 
             Route::group(['prefix' => 'auth'], function () {
                 Route::get('/me', [UserAPIController::class, 'me']);

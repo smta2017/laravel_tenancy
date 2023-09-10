@@ -1,0 +1,138 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "name",
+        "dbType": "string:nullable",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "code",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },  
+    {
+        "name": "category_id",
+        "dbType": "foreignId:constrained",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,category,category_id,id",
+        "searchable": true
+    },
+    {
+        "name": "status_id",
+        "dbType": "foreignId:constrained",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Status,status_id,id",
+        "searchable": true
+    },
+    {
+        "name": "brand_id",
+        "dbType": "foreignId:constrained",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Brand,brand_id,id",
+        "searchable": true
+    },
+    {
+        "name": "tax",
+        "dbType": "double:nullable",
+        "htmlType": null,
+        "searchable": true
+    },
+    {
+        "name": "tax_type",
+        "dbType": "enum,['inc','exc']:default,'inc'",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "description",
+        "dbType": "string",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "type",
+        "dbType": "enum,['standerd','variable','service']:default,'standerd'",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "cost",
+        "dbType": "double:default,0",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "price",
+        "dbType": "double:default,0",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "unit_id",
+        "dbType": "foreignId:constrained:nullable",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Unit,unit_id,id",
+        "searchable": true
+
+    },
+    {
+        "name": "sale_unit_id",
+        "dbType": "foreignId:nullable",
+        "htmlType": "",
+        "relation": "mt1,Unit,sale_unit_id,id",
+        "searchable": true
+    },
+    {
+        "name": "purchase_unit_id",
+        "dbType": "foreignId:nullable",
+        "htmlType": "",
+        "relation": "mt1,Unit,purchase_unit_id,id",
+        "searchable": true
+    },
+    {
+        "name": "stok_alert",
+        "dbType": "integer:nullable",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "has_serial",
+        "dbType": "boolean:nullable",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "not_for_sale",
+        "dbType": "boolean:nullable",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

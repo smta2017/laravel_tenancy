@@ -1,0 +1,67 @@
+
+
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "name",
+        "dbType": "string",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "phone",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "country",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "city",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "email",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "tax_number",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "address",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

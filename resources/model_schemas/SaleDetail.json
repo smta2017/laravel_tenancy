@@ -1,0 +1,144 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "sale_id",
+        "dbType": "foreignId:constrained",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,Sale,sale_id,id",
+        "searchable": true
+    },
+    {
+        "name": "name",
+        "dbType": "string",
+        "validations": "required",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "discountNet",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "discount_Method",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "discount",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "net_cost",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "unit_cost",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "code",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "del",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "no_unit",
+        "dbType": "integer:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "product_id",
+        "dbType": "foreignId:constrained",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,Product,product_id,id",
+        "searchable": true
+    },
+    {
+        "name": "purchase_unit_id",
+        "dbType": "foreignId",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,Unit,purchase_unit_id,id",
+        "searchable": true
+    },
+    {
+        "name": "quantity",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "stock",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "subtotal",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "tax_type",
+        "dbType": "enum,['inc','exc']:default,'inc'",
+        "htmlType": "",
+        "searchable": true
+    }, 
+    {
+        "name": "tax_percent",
+        "dbType": "integer:nullable:default,0",
+        "htmlType": "",
+        "searchable": true
+    }, 
+    {
+        "name": "taxe",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "unitPurchase",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

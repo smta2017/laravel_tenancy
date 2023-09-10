@@ -1,0 +1,99 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "",
+        "dbType": "",
+        "type":"relation",
+        "relation": "1tm,SaleDetails,sale_id,id"
+    },
+    {
+        "name": "GrandTotal",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "TaxNet",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },  
+    {
+        "name": "the_date",
+        "dbType": "date",
+        "validations": "required",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "discount",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },  
+    {
+        "name": "notes",
+        "dbType": "string",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "shipping",
+        "dbType": "double:nullable:default,0",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "status_id",
+        "dbType": "foreignId",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,SaleStatues,status_id,id",
+        "searchable": true
+
+    },
+    {
+        "name": "customer_id",
+        "dbType": "foreignId:constrained",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Customer,customer_id,id",
+        "searchable": true
+
+    },
+    {
+        "name": "warehouse_id",
+        "dbType": "foreignId:constrained",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Warehouse,warehouse_id,id",
+        "searchable": true
+
+    },
+    {
+        "name": "tax_rate",
+        "dbType": "double:nullable:default,0",
+        "htmlType": "",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

@@ -113,3 +113,5 @@ Route::get('country', function () {
 //     $subdomain = $tenant->id; // Replace this with your way of fetching the tenant's primary domain.
 //     return redirect("http://$subdomain.saas.test/impersonate/{$token->token}");
 // });
+
+

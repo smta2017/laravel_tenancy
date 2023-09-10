@@ -23,12 +23,12 @@ class DatabaseSeeder extends Seeder
         //=============================================================
         //=============================================================
 
-        $tenants = ['foo','bar','sab'];
+        $tenants = ['foo', 'bar', 'sab'];
 
         foreach ($tenants as $value) {
-            if(!Tenant::find($value)){
+            if (!Tenant::find($value)) {
                 $tenant = Tenant::create(['id' => $value]);
-                $tenant->domains()->create(['domain' => $value .'.saas.test']);
+                $tenant->domains()->create(['domain' => $value . '.saas.test']);
             }
         }
 
@@ -37,6 +37,22 @@ class DatabaseSeeder extends Seeder
         // });
 
         \App\Models\CentralUser::factory(3)->create();
-        
+
+        $this->call([
+            BrandsTableSeeder::class,
+            CategoriesTableSeeder::class,
+            StatusesTableSeeder::class,
+            UnitsTableSeeder::class,
+            WarehousesTableSeeder::class,
+            ProductsTableSeeder::class,
+            SuppliersTableSeeder::class,
+            CustomersTableSeeder::class,
+            PurchaseStatuesTableSeeder::class,
+            PurchasesTableSeeder::class,
+            PurchaseDetailsTableSeeder::class,
+            SaleStatuesTableSeeder::class,
+            SalesTableSeeder::class,
+            SaleDetailsTableSeeder::class,
+        ]);
     }
 }
