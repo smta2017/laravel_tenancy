@@ -22,8 +22,10 @@ class LoginController extends AppBaseController
             $sanctum_token = $request->user()->createToken('api-login-token')->plainTextToken;
 
             $subdomain = $tenant->id;
+            $current_user=Auth::user();
             // Return a JSON response with the token and user details
             return  $this->sendResponse([
+                "user"=>$current_user,
                 "token" => $sanctum_token,
                 "tenant_id" => $subdomain,
                 "domain" => "$subdomain.saas.test",
