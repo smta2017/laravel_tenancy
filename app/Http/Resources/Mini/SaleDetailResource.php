@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Mini;
 
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PurchaseDetailsResource extends JsonResource
+class SaleDetailResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,7 +17,7 @@ class PurchaseDetailsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'purchase_id' => $this->purchase_id,
+            'sale_id' => $this->sale_id,
             'name' => $this->name,
             'discountNet' => $this->discountNet,
             'discount_Method' => $this->discount_Method,
@@ -29,7 +29,6 @@ class PurchaseDetailsResource extends JsonResource
             'no_unit' => $this->no_unit,
             'product_id' => $this->product_id,
             'product' => new ProductResource($this->product),
-            'price' => $this->product->price,
             'purchase_unit_id' => $this->purchase_unit_id,
             'quantity' => $this->quantity,
             'stock' => $this->stock,

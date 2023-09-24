@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 use App\Models\SaleStatues;
 use App\Models\Customer;
+use App\Models\User;
 use App\Models\Warehouse;
 
 class SaleFactory extends Factory
@@ -31,8 +32,8 @@ class SaleFactory extends Factory
             $warehouse = Warehouse::factory()->create();
         }
         return [
-            'GrandTotal' => $this->faker->randomDigitNotNull,
-            'TaxNet' => $this->faker->randomDigitNotNull,
+            'grand_total' => $this->faker->randomDigitNotNull,
+            'tax_net' => $this->faker->randomDigitNotNull,
             'the_date' => $this->faker->date('Y-m-d'),
             'discount' => $this->faker->randomDigitNotNull,
             'notes' => fake()->name(),
@@ -41,6 +42,7 @@ class SaleFactory extends Factory
             'customer_id' => Customer::pluck('id')->random(),
             'warehouse_id' => Warehouse::pluck('id')->random(),
             'tax_rate' => $this->faker->randomDigitNotNull,
+            'created_by' =>  User::pluck('id')->random(),
             'created_at' => $this->faker->date('Y-m-d H:i:s'),
             'updated_at' => $this->faker->date('Y-m-d H:i:s')
         ];

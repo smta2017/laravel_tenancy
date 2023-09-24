@@ -10,6 +10,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\SaleResource;
+use App\Models\SaleDetail;
+use App\Repositories\InventoryRepository;
 
 /**
  * Class SaleAPIController
@@ -18,10 +20,13 @@ class SaleAPIController extends AppBaseController
 {
     /** @var  SaleRepository */
     private $saleRepository;
+    private $inventoryRepository;
 
-    public function __construct(SaleRepository $saleRepo)
+
+    public function __construct(SaleRepository $saleRepo, InventoryRepository $inventoryRepo)
     {
         $this->saleRepository = $saleRepo;
+        $this->inventoryRepository = $inventoryRepo;
     }
 
     /**
@@ -36,7 +41,9 @@ class SaleAPIController extends AppBaseController
             $request->get('limit')
         );
 
-        return $this->sendResponse(SaleResource::collection($sales), 'Sales retrieved successfully');
+        $sortedSales = $sales->sortByDesc('created_at');
+
+        return $this->sendResponse(SaleResource::collection($sortedSales), 'Sales retrieved successfully');
     }
 
     /**
@@ -47,7 +54,18 @@ class SaleAPIController extends AppBaseController
     {
         $input = $request->all();
 
+        $input['created_by'] = auth()->user()->id;
         $sale = $this->saleRepository->create($input);
+
+        if (isset($request->details) && !empty($request->details)) {
+
+            foreach ($request->details as $product) {
+                $product =  array_merge($product, ["sale_id" => $sale->id]);
+
+                SaleDetail::create($product);
+                $this->inventoryRepository->saleOpration($product, $sale);
+            }
+        }
 
         return $this->sendResponse(new SaleResource($sale), 'Sale saved successfully');
     }
@@ -84,6 +102,19 @@ class SaleAPIController extends AppBaseController
         }
 
         $sale = $this->saleRepository->update($input, $id);
+
+        if (isset($request->details)) {
+
+            $sale = Sale::find($id);
+            $sale->saleDetails()->forceDelete();
+
+            foreach ($request->details as $product) {
+                SaleDetail::create(array_merge($product, ["sale_id" => $sale->id]));
+
+                // Update inventory
+                $this->inventoryRepository->saleOpration($product, $sale);
+            }
+        }
 
         return $this->sendResponse(new SaleResource($sale), 'Sale updated successfully');
     }

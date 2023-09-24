@@ -14,6 +14,7 @@ class WarehouseFactory extends Factory
      * @var string
      */
     protected $model = Warehouse::class;
+    private static $counter = 1;
 
     /**
      * Define the model's default state.
@@ -22,9 +23,10 @@ class WarehouseFactory extends Factory
      */
     public function definition()
     {
-        
+        $serialNumber = self::$counter++;
+
         return [
-            'name' => fake()->name(),
+            'name' => 'Warehouse' . $serialNumber, // Use unique() to ensure unique numbers
             'phone' => $this->faker->numerify('0##########'),
             'country' => fake()->name(),
             'city' => fake()->name(),

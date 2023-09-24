@@ -8,8 +8,8 @@ use App\Repositories\BaseRepository;
 class PurchaseRepository extends BaseRepository
 {
     protected $fieldSearchable = [
-        'GrandTotal',
-        'TaxNet',
+        'grand_total',
+        'tax_net',
         'the_date',
         'discount',
         'notes',
@@ -18,6 +18,7 @@ class PurchaseRepository extends BaseRepository
         'supplier_id',
         'warehouse_id',
         'tax_rate',
+        'created_by',
         'created_at',
         'updated_at'
     ];

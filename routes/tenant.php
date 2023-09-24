@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
+use App\Http\Controllers\API\ProductAPIController;
 use App\Http\Controllers\Api\RolePermissionController;
 use App\Http\Controllers\API\UserAPIController;
 use Illuminate\Support\Facades\Route;
@@ -44,7 +45,7 @@ Route::middleware([
 
             Route::get('/users', [UserAPIController::class, 'index']);
 
-            
+
 
             Route::resource('suppliers', App\Http\Controllers\API\SupplierAPIController::class)
                 ->except(['create', 'edit']);
@@ -67,7 +68,8 @@ Route::middleware([
             Route::resource('warehouses', App\Http\Controllers\API\WarehouseAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('products', App\Http\Controllers\API\ProductAPIController::class)
+            Route::get('/products/list-sale', [ProductAPIController::class, 'productListForSale']);
+            Route::resource('products', ProductAPIController::class)
                 ->except(['create', 'edit']);
 
             Route::resource('purchase-statues', App\Http\Controllers\API\PurchaseStatuesAPIController::class)
@@ -88,6 +90,8 @@ Route::middleware([
             Route::resource('sale-details', App\Http\Controllers\API\SaleDetailAPIController::class)
                 ->except(['create', 'edit']);
 
+            Route::resource('inventories', App\Http\Controllers\API\InventoryAPIController::class)
+                ->except(['create', 'edit']);
 
 
 

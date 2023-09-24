@@ -70,9 +70,13 @@ abstract class BaseRepository implements IBase
         $query = $this->model->newQuery();
 
         if (count($search)) {
-            foreach($search as $key => $value) {
+            foreach ($search as $key => $value) {
                 if (in_array($key, $this->getFieldsSearchable())) {
-                    $query->where($key, $value);
+                    if (is_array($value) && count($value) == 2) {
+                        $query->where($key, $value[0], $value[1]);
+                    } else {
+                        $query->where($key, $value);
+                    }
                 }
             }
         }

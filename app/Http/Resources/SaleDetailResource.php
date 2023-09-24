@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class SaleDetailResource extends JsonResource
@@ -27,6 +28,7 @@ class SaleDetailResource extends JsonResource
             'del' => $this->del,
             'no_unit' => $this->no_unit,
             'product_id' => $this->product_id,
+            'product' => new ProductResource($this->product),
             'purchase_unit_id' => $this->purchase_unit_id,
             'quantity' => $this->quantity,
             'stock' => $this->stock,
@@ -35,8 +37,8 @@ class SaleDetailResource extends JsonResource
             'tax_percent' => $this->tax_percent,
             'taxe' => $this->taxe,
             'unitPurchase' => $this->unitPurchase,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'), // Format created_at
+            'updated_at' => Carbon::parse($this->updated_at)->format('Y-m-d H:i:s'), // Format updated_at
         ];
     }
 }

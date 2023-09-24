@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         //=============================================================
         //=============================================================
 
-        $tenants = ['foo', 'bar', 'sab'];
+    $tenants = [/*'foo', 'bar', 'sab'*/];
 
         foreach ($tenants as $value) {
             if (!Tenant::find($value)) {
@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\CentralUser::factory(3)->create();
 
         $this->call([
+            UsersTableSeeder::class,
             BrandsTableSeeder::class,
             CategoriesTableSeeder::class,
             StatusesTableSeeder::class,
@@ -53,6 +54,7 @@ class DatabaseSeeder extends Seeder
             SaleStatuesTableSeeder::class,
             SalesTableSeeder::class,
             SaleDetailsTableSeeder::class,
+            InventoriesTableSeeder::class,
         ]);
     }
 }

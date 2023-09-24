@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\Mini;
 
-use App\Http\Resources\Mini\UserResource;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SaleResource extends JsonResource
+class PurchaseResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -25,13 +24,12 @@ class SaleResource extends JsonResource
             'notes' => $this->notes,
             'shipping' => $this->shipping,
             'status_id' => $this->status_id,
-            'customer' => $this->customer,
+            'supplier' => $this->supplier,
             'warehouse' => $this->warehouse,
             'tax_rate' => $this->tax_rate,
-            'created_by' => new UserResource($this->createdBy),
-            'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i'), // Format created_at
-            'updated_at' => Carbon::parse($this->updated_at)->format('Y-m-d H:i'), // Format updated_at
-            'details' => SaleDetailResource::collection( $this->saleDetails )
+            'created_at' => Carbon::parse($this->created_at)->format('Y-m-d H:i:s'), // Format created_at
+            'updated_at' => Carbon::parse($this->updated_at)->format('Y-m-d H:i:s'), // Format updated_at
+            'details' => PurchaseDetailsResource::collection( $this->purchaseDetails ),
         ];
     }
 }

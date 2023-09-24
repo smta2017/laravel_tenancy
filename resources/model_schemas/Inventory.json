@@ -1,0 +1,61 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "purchase_id",
+        "dbType": "foreignId:constrained",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,Purchase,purchase_id,id",
+        "searchable": true
+    },
+    {
+        "name": "product_id",
+        "dbType": "foreignId:constrained",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,Product,product_id,id",
+        "searchable": true
+    },
+    {
+        "name": "supplier_id",
+        "dbType": "foreignId:constrained",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Supplier,supplier_id,id",
+        "searchable": true
+    },
+    {
+        "name": "warehouse_id",
+        "dbType": "foreignId:constrained",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Warehouse,warehouse_id,id",
+        "searchable": true
+    },
+    {
+        "name": "quantity",
+        "dbType": "double:nullable:default,0",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

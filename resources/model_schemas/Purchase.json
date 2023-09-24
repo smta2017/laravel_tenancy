@@ -13,13 +13,13 @@
         "relation": "1tm,PurchaseDetails,purchase_id,id"
     },
     {
-        "name": "GrandTotal",
+        "name": "grand_total",
         "dbType": "double:nullable:default,0",
         "validations": "",
         "searchable": true
     },
     {
-        "name": "TaxNet",
+        "name": "tax_net",
         "dbType": "double:nullable:default,0",
         "validations": "",
         "searchable": true
@@ -39,7 +39,7 @@
     },
     {
         "name": "notes",
-        "dbType": "string",
+        "dbType": "string:nullable",
         "htmlType": "",
         "searchable": true
     },
@@ -52,7 +52,7 @@
     {
         "name": "status_id",
         "dbType": "foreignId",
-        "validations": "required",
+        "validations": "",
         "htmlType": "",
         "relation": "mt1,PurchaseStatues,status_id,id",
         "searchable": true
@@ -78,6 +78,15 @@
         "dbType": "double:nullable:default,0",
         "htmlType": "",
         "searchable": true
+    },
+    {
+        "name": "created_by",
+        "dbType": "foreignId:constrained",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,User,created_by,id",
+        "searchable": true
+
     },
     {
         "name": "created_at",

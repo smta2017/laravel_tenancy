@@ -81,4 +81,9 @@ class Product extends Model
     {
         return $this->belongsTo(\App\Models\Unit::class, 'purchase_unit_id', 'id');
     }
+
+    public function Inventories(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\Inventory::class);
+    }
 }

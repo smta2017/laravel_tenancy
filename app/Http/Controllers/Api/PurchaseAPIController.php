@@ -10,6 +10,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\PurchaseResource;
+use App\Models\Inventory;
+use App\Models\PurchaseDetails;
+use App\Repositories\InventoryRepository;
 
 /**
  * Class PurchaseAPIController
@@ -18,10 +21,12 @@ class PurchaseAPIController extends AppBaseController
 {
     /** @var  PurchaseRepository */
     private $purchaseRepository;
+    private $inventoryRepository;
 
-    public function __construct(PurchaseRepository $purchaseRepo)
+    public function __construct(PurchaseRepository $purchaseRepo, InventoryRepository $inventoryRepo)
     {
         $this->purchaseRepository = $purchaseRepo;
+        $this->inventoryRepository = $inventoryRepo;
     }
 
     /**
@@ -36,7 +41,10 @@ class PurchaseAPIController extends AppBaseController
             $request->get('limit')
         );
 
-        return $this->sendResponse(PurchaseResource::collection($purchases), 'Purchases retrieved successfully');
+        // Sort the purchases by created_at in descending order
+        $sortedPurchases = $purchases->sortByDesc('created_at');
+
+        return $this->sendResponse(PurchaseResource::collection($sortedPurchases), 'Purchases retrieved successfully');
     }
 
     /**
@@ -47,7 +55,18 @@ class PurchaseAPIController extends AppBaseController
     {
         $input = $request->all();
 
+        $input['created_by'] = auth()->user()->id;
         $purchase = $this->purchaseRepository->create($input);
+
+        if (isset($request->details) && !empty($request->details)) {
+
+            foreach ($request->details as $product) {
+                $product =  array_merge($product, ["purchase_id" => $purchase->id]);
+
+                PurchaseDetails::create($product);
+                $this->inventoryRepository->updateInventory($product, $purchase);
+            }
+        }
 
         return $this->sendResponse(new PurchaseResource($purchase), 'Purchase saved successfully');
     }
@@ -84,6 +103,19 @@ class PurchaseAPIController extends AppBaseController
         }
 
         $purchase = $this->purchaseRepository->update($input, $id);
+
+        if (isset($request->details)) {
+
+            $purchase = Purchase::find($id);
+            $purchase->purchaseDetails()->forceDelete();
+
+            foreach ($request->details as $product) {
+                PurchaseDetails::create(array_merge($product, ["purchase_id" => $purchase->id]));
+
+                // Update inventory
+                $this->inventoryRepository->updateInventory($product, $purchase);
+            }
+        }
 
         return $this->sendResponse(new PurchaseResource($purchase), 'Purchase updated successfully');
     }

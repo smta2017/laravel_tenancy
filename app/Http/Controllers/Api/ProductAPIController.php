@@ -36,7 +36,9 @@ class ProductAPIController extends AppBaseController
             $request->get('limit')
         );
 
-        return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully');
+        $sortedProducts = $products->sortByDesc('name');
+
+        return $this->sendResponse(ProductResource::collection($sortedProducts), 'Products retrieved successfully');
     }
 
     /**
@@ -106,5 +108,21 @@ class ProductAPIController extends AppBaseController
         $product->delete();
 
         return $this->sendSuccess('Product deleted successfully');
+    }
+
+    /**
+     * Display a listing of the Products.
+     * GET|HEAD /products
+     */
+    public function productListForSale(Request $request): JsonResponse
+    {
+        $products = Product::where('name', 'like', '%' . $request->name . '%')->get();
+
+
+        $products = ProductResource::collection($products);
+
+        // $products = $products->filter('quantity', ">", 0);
+
+        return $this->sendResponse($products, 'Products retrieved successfully');
     }
 }
