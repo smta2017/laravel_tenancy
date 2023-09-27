@@ -48,6 +48,9 @@ Route::post('email/resend', [VerificationController::class, 'resend'])->name('ve
 Route::group(['prefix' => 'tenant'], function () {
     Route::post('login', [LoginController::class, "login"]);
     Route::post('register', [RegisterController::class, "createTenant"]);
+    Route::post('register',function(){
+        return "reg";
+    });
     
     Route::group(['prefix' => 'password'], function () {
         Route::post('/email', [ResetPasswordController::class, 'sendResetLinkEmail']);
