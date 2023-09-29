@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
-use App\Http\Controllers\API\ProductAPIController;
+use App\Http\Controllers\Api\ProductAPIController;
 use App\Http\Controllers\Api\RolePermissionController;
-use App\Http\Controllers\API\UserAPIController;
+use App\Http\Controllers\Api\UserAPIController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -47,50 +47,50 @@ Route::middleware([
 
 
 
-            Route::resource('suppliers', App\Http\Controllers\API\SupplierAPIController::class)
+            Route::resource('suppliers', App\Http\Controllers\Api\SupplierAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('customers', App\Http\Controllers\API\CustomerAPIController::class)
+            Route::resource('customers', App\Http\Controllers\Api\CustomerAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('brands', App\Http\Controllers\API\BrandAPIController::class)
+            Route::resource('brands', App\Http\Controllers\Api\BrandAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('categories', App\Http\Controllers\API\CategoryAPIController::class)
+            Route::resource('categories', App\Http\Controllers\Api\CategoryAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('statuses', App\Http\Controllers\API\StatusAPIController::class)
+            Route::resource('statuses', App\Http\Controllers\Api\StatusAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('units', App\Http\Controllers\API\UnitAPIController::class)
+            Route::resource('units', App\Http\Controllers\Api\UnitAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('warehouses', App\Http\Controllers\API\WarehouseAPIController::class)
+            Route::resource('warehouses', App\Http\Controllers\Api\WarehouseAPIController::class)
                 ->except(['create', 'edit']);
 
             Route::get('/products/list-sale', [ProductAPIController::class, 'productListForSale']);
             Route::resource('products', ProductAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('purchase-statues', App\Http\Controllers\API\PurchaseStatuesAPIController::class)
+            Route::resource('purchase-statues', App\Http\Controllers\Api\PurchaseStatuesAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('purchases', App\Http\Controllers\API\PurchaseAPIController::class)
+            Route::resource('purchases', App\Http\Controllers\Api\PurchaseAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('purchase-details', App\Http\Controllers\API\PurchaseDetailsAPIController::class)
+            Route::resource('purchase-details', App\Http\Controllers\Api\PurchaseDetailsAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('sale-statues', App\Http\Controllers\API\SaleStatuesAPIController::class)
+            Route::resource('sale-statues', App\Http\Controllers\Api\SaleStatuesAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('sales', App\Http\Controllers\API\SaleAPIController::class)
+            Route::resource('sales', App\Http\Controllers\Api\SaleAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('sale-details', App\Http\Controllers\API\SaleDetailAPIController::class)
+            Route::resource('sale-details', App\Http\Controllers\Api\SaleDetailAPIController::class)
                 ->except(['create', 'edit']);
 
-            Route::resource('inventories', App\Http\Controllers\API\InventoryAPIController::class)
+            Route::resource('inventories', App\Http\Controllers\Api\InventoryAPIController::class)
                 ->except(['create', 'edit']);
 
 
