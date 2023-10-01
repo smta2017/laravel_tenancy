@@ -23,7 +23,7 @@
         "dbType": "foreignId:constrained",
         "validations": "required",
         "htmlType": "",
-        "relation": "mt1,category,category_id,id",
+        "relation": "mt1,Category,category_id,id",
         "searchable": true
     },
     {
