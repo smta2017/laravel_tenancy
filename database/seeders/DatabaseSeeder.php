@@ -25,18 +25,18 @@ class DatabaseSeeder extends Seeder
 
         $tenants = ['foo','bar','sab'];
 
-        foreach ($tenants as $value) {
-            if(!Tenant::find($value)){
-                $tenant = Tenant::create(['id' => $value]);
-                $tenant->domains()->create(['domain' => $value .'.saas.test']);
-            }
-        }
+        // foreach ($tenants as $value) {
+        //     if(!Tenant::find($value)){
+        //         $tenant = Tenant::create(['id' => $value]);
+        //         $tenant->domains()->create(['domain' => $value .'.saas.test']);
+        //     }
+        // }
 
         // Tenant::all()->runForEach(function ($tn) {
         //     User::factory(10)->create();
         // });
 
-        \App\Models\CentralUser::factory(3)->create();
+        // \App\Models\CentralUser::factory(3)->create();
         
     }
 }

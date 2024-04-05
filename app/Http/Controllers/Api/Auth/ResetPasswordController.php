@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\CentralUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
@@ -21,7 +23,7 @@ class ResetPasswordController extends Controller
             ? response()->json(['message' => 'Reset link sent to your email'], 200)
             : response()->json(['message' => 'Unable to send reset link'], 400);
     }
-
+    
 
     public function resetPassword(Request $request)
     {
@@ -36,6 +38,12 @@ class ResetPasswordController extends Controller
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
+
+                $central_user = CentralUser::whereGlobalId($user->global_id)->first();
+                $tenant = $central_user->Tenants->first();
+                tenancy()->initialize($tenant);
+
+                $user = User::whereGlobalId($central_user->global_id)->first();
                 $user->forceFill([
                     'password' => Hash::make($password),
                     'remember_token' => \Str::random(60),

@@ -18,10 +18,10 @@ class UserAPIController extends AppBaseController
 {
     private $userRepository;
 
-    // public function __construct(IUser $userRepo)
-    // {
-    //     $this->userRepository = $userRepo;
-    // }
+    public function __construct(IUser $userRepo)
+    {
+        $this->userRepository = $userRepo;
+    }
 
 
 

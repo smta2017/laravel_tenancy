@@ -39,10 +39,12 @@ Route::middleware([
             $countries = World::Countries();
         });
 
+        Route::get('/tenant/password/reset', [ResetPasswordController::class, 'resetPassword']);
 
         Route::group(['middleware' => 'auth:sanctum'], function () {
 
             Route::get('/users', [UserAPIController::class, 'index']);
+            Route::put('/users/{id}', [UserAPIController::class, 'update']);
 
 
             Route::group(['prefix' => 'auth'], function () {
