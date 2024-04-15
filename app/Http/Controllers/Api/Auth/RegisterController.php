@@ -13,6 +13,8 @@ use App\Models\Tenant;
 use App\Models\TenantModel;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Worksome\VerifyByPhone\Contracts\PhoneVerificationService;
+use Propaganistas\LaravelPhone\PhoneNumber;
 
 class RegisterController extends AppBaseController
 {
@@ -21,21 +23,22 @@ class RegisterController extends AppBaseController
     public function sendotp(Request $request)
     {
         $sender = OTPVerify::sendOTP($request);
-        if (!$sender['success']) {
+        if (!$sender['status']) {
             return $this->sendError($sender['message']);
         }
-        return $this->sendSuccess($sender['message']);
+        return $this->sendSuccess('OTP sent success!');
     }
 
+   
     public function verifyotp(Request $request)
     {
         $sender = OTPVerify::verifyOTP($request);
-        if (!$sender['success']) {
+        if (!$sender['status']) {
             return $this->sendError($sender['message']);
             $this->storePhoneSession($request, false);
         }
-        $this->storePhoneSession($request, true);
-        return $this->sendSuccess($sender['message']);
+        $this->storePhoneSession($request->phone, true);
+        return $this->sendSuccess('OTP success verify check!');
     }
 
     public function createTenant(CreateTenantRequest $request)
@@ -52,7 +55,7 @@ class RegisterController extends AppBaseController
         //Create tenant domain
         $tenant->domains()->create(['domain' => $request->id . '.' . $central_domain]);
 
-        $this->storePhoneSession($request, false);
+        $this->storePhoneSession($request->phone, false);
         // ========================================================================
 
         $admin = $this->generateTenantAdmin($request, $tenant);
@@ -72,9 +75,9 @@ class RegisterController extends AppBaseController
         return $this->sendError('No verified phone found');
     }
 
-    public function storePhoneSession(Request $request, bool $status)
+    public function storePhoneSession($phone, bool $status)
     {
-        session([$request->phone => $status]);
+        session([$phone => $status]);
     }
 
     public function generateTenantAdmin($request, $tenant)
@@ -84,6 +87,7 @@ class RegisterController extends AppBaseController
             'global_id' => (string) \Str::uuid(),
             'name' => 'admin',
             'email' =>  $request->email,
+            'phone' =>  $request->phone,
             'password' => \Hash::make($request['password'] ?? 'password')
         ];
 

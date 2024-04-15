@@ -58,6 +58,7 @@ class User extends Authenticatable implements Syncable
         'email',
         'password',
         'global_id',
+        'phone',
     ];
 
     /**

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('mob', 20)->nullable();
+            $table->string('phone', 20)->nullable()->unique();
             $table->integer('nationalitie_id')->nullable();
             $table->date('d_o_b')->nullable();
             $table->string('job', 100)->nullable();

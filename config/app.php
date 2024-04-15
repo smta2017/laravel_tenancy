@@ -59,6 +59,8 @@ return [
 
     'asset_url' => env('ASSET_URL'),
 
+    'auth_by_mobile' => env('AUTH_BY_MOBILE',false),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

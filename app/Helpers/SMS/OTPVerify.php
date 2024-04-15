@@ -5,54 +5,60 @@ namespace App\Helpers\SMS;
 use App\Helpers\CURL;
 use App\Helpers\Helper;
 use Illuminate\Http\Request;
+use Twilio\Rest\Client;
 
 class OTPVerify
 {
     use Helper;
+
     public static function sendOTP(Request $request)
     {
         if (self::TestedEnv()) {
-            return ["success" => \true, "message" => "ok"];
+            return ["status" => true, "message" => "ok"];
+        }
+        $sid    = env('TWILIO_ACCOUNT_SID');
+        $token  = env('TWILIO_AUTH_TOKEN');
+        $twilio = new Client($sid, $token);
+
+        try {
+            $verification = $twilio->verify->v2->services("VAed4995aefaadb7b05c33f29429029557")
+                ->verifications
+                ->create($request->phone, "sms");
+        } catch (\Throwable $th) {
+            return ['status' => false, 'message' => $th->getMessage()];
         }
 
-        $VIA = 'sms';
-        $phone = $request["phone"];
-        $countryCode = $request["country_code"];
-
-        $options = [
-            CURLOPT_URL => 'https://api.authy.com/protected/json/phones/verification/start',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POSTFIELDS => "via=$VIA&phone_number=$phone&country_code=$countryCode&locale='en'&code_length=6",
-            CURLOPT_POST => true,
-            CURLOPT_HTTPHEADER => [
-                'X-Authy-Api-Key: V5j0gNwPJQuI97V0qI5MJTMOBhNVTu13',
-                'Content-Type: application/x-www-form-urlencoded',
-            ]
-        ];
-
-        return CURL::sendCurl($options);
+        if (!empty($verification->sid)) {
+            return ['status' => true];
+        }
     }
 
     public static function verifyOTP(Request $request)
     {
         if (self::TestedEnv()) {
-            return ["success" => \true, "message" => "ok"];
+            return ["status" => true, "message" => "ok"];
         }
-        $USER_PHONE = $request['phone'];
-        $COUNTRY_CODE = $request['country_code'];
-        $VERIFICATION_CODE = $request->otp;
 
-        $options = [
-            CURLOPT_URL => 'https://api.authy.com/protected/json/phones/verification/check',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POSTFIELDS => "phone_number=$USER_PHONE&country_code=$COUNTRY_CODE&verification_code=$VERIFICATION_CODE",
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => [
-                'X-Authy-Api-Key: V5j0gNwPJQuI97V0qI5MJTMOBhNVTu13',
-                'Content-Type: application/x-www-form-urlencoded',
-            ]
-        ];
+        $sid    = env('TWILIO_ACCOUNT_SID');
+        $token  = env('TWILIO_AUTH_TOKEN');
+        $twilio = new Client($sid, $token);
 
-        return CURL::sendCurl($options);
+        try {
+            $verification_check = $twilio->verify->v2->services("VAed4995aefaadb7b05c33f29429029557")
+                ->verificationChecks
+                ->create(
+                    [
+                        "to" => $request->phone,
+                        "code" => $request->otp
+                    ]
+                );
+        } catch (\Throwable $th) {
+            return ['status' => false, 'message' => $th->getMessage()];
+        }
+
+        if ($verification_check->status == "approved" && $verification_check->valid) {
+            return ['status' => true];
+        }
+        return ['status' => false];
     }
 }

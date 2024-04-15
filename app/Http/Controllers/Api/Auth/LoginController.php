@@ -13,19 +13,20 @@ class LoginController extends AppBaseController
     public function login(LoginTenantRequest $request)
     {
         // Attempt to log in the CentralUser using the credentials
-        if (Auth::attempt($request->only('email', 'password'))) {
+        $attempt_type = is_numeric($request->email) ? 'phone' : 'email';
+        if (Auth::attempt([$attempt_type => $request->email, 'password' => $request->password])) {
 
             $central_user = CentralUser::find($request->user()->id);
             $tenant = $central_user->Tenants->first();
             tenancy()->initialize($tenant);
-            Auth::attempt($request->only('email', 'password'));
+            Auth::attempt([$attempt_type => $request->email, 'password' => $request->password]);
             $sanctum_token = $request->user()->createToken('api-login-token')->plainTextToken;
 
             $subdomain = $tenant->id;
-            $current_user=Auth::user();
+            $current_user = Auth::user();
             // Return a JSON response with the token and user details
             return  $this->sendResponse([
-                "user"=>$current_user,
+                "user" => $current_user,
                 "token" => $sanctum_token,
                 "tenant_id" => $subdomain,
                 "domain" => "$subdomain.saas.test",
@@ -33,7 +34,7 @@ class LoginController extends AppBaseController
             ], 'Tenant Login successfuly');
         } else {
             // Return an error response if the login attempt failed
-            return $this->sendError('Invalid credentials',401);
+            return $this->sendError('Invalid credentials', 401);
         }
     }
 }
