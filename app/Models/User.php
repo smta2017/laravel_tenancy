@@ -15,9 +15,14 @@ use Stancl\Tenancy\Database\Concerns\ResourceSyncing;
 class User extends Authenticatable implements Syncable
 {
     use HasApiTokens, HasFactory, Notifiable, ResourceSyncing, HasRoles;
-
+    protected string $guard_name = 'web';
     protected $guarded = [];
     public $timestamps = false;
+
+    public function getGuardName()
+    {
+        return 'web';
+    }
 
     public function getGlobalIdentifierKey()
     {
@@ -34,6 +39,11 @@ class User extends Authenticatable implements Syncable
         return CentralUser::class;
     }
 
+    public function centralUser()
+    {
+        return CentralUser::where('global_id', $this->global_id)->first();
+    }
+
     public function getSyncedAttributeNames(): array
     {
         return [
@@ -42,7 +52,6 @@ class User extends Authenticatable implements Syncable
             'email',
         ];
     }
-
 
     // ====================================
 
@@ -77,7 +86,7 @@ class User extends Authenticatable implements Syncable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'account_verified_at' => 'datetime',
     ];
 
     public static array $rules = [

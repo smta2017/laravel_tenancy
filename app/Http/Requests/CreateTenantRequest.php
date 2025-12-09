@@ -45,7 +45,6 @@ class CreateTenantRequest extends FormRequest
         return [
             'id' => 'required',
             'phone' => 'required|numeric',
-            'email' => 'required|email|unique:tenants'
         ];
     }
 

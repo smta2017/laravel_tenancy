@@ -42,9 +42,16 @@ Route::middleware([
         Route::get('/tenant/password/reset', [ResetPasswordController::class, 'resetPassword']);
 
         Route::group(['middleware' => 'auth:sanctum'], function () {
-
+            
             Route::get('/users', [UserAPIController::class, 'index']);
+            Route::post('/users', [UserAPIController::class, 'store']);
+            Route::put('/users/verify-accout', [UserAPIController::class, 'verifyAccout']);
             Route::put('/users/{id}', [UserAPIController::class, 'update']);
+            
+            // assign-role   
+            Route::post('/users/{id}/assign-roles', [UserAPIController::class, 'assignRoles']);
+            // assign-permission
+            Route::post('/users/{id}/assign-permissions', [UserAPIController::class, 'assignPermissions']);
 
 
             Route::group(['prefix' => 'auth'], function () {

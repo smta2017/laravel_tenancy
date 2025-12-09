@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -12,6 +13,8 @@ class RolePermissionController extends Controller
     // Index action to list all roles and permissions
     public function index()
     {
+        $this->checkPermission('settings.access');
+
         $roles = Role::all();
         $permissions = Permission::all();
 
@@ -21,7 +24,7 @@ class RolePermissionController extends Controller
         ], 'Successfully');
     }
 
-    
+
     // Create a new role
     public function createRole(Request $request)
     {
@@ -29,7 +32,7 @@ class RolePermissionController extends Controller
             'name' => 'required|unique:roles',
         ]);
 
-        $role = Role::create(['name' => $request->input('name')]);
+        $role = Role::create(['name' => $request->input('name'), 'guard_name' => $request->input('guard_name', 'web')]);
 
         return $this->sendResponse($role, 'Role created successfully', 201);
     }
@@ -41,7 +44,7 @@ class RolePermissionController extends Controller
             'name' => 'required|unique:permissions',
         ]);
 
-        $permission = Permission::create(['name' => $request->input('name')]);
+        $permission = Permission::create(['name' => $request->input('name'), 'guard_name' => $request->input('guard_name', 'web')]);
 
         return $this->sendResponse($permission, 'Permission created successfully', 201);
     }
@@ -59,9 +62,9 @@ class RolePermissionController extends Controller
     // Remove permission(s) from a role
     public function removePermissionFromRole(Request $request, Role $role)
     {
-        $permissionIds = $request->input('permission_ids');
+        $permissionId = $request->input('permission_ids');
 
-        $role->revokePermissionTo($permissionIds);
+        $role->revokePermissionTo($permissionId);
 
         return $this->sendResponse($role, 'Permissions removed from the role successfully');
     }

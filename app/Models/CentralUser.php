@@ -9,15 +9,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Stancl\Tenancy\Contracts\SyncMaster;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 use Stancl\Tenancy\Database\Concerns\ResourceSyncing;
+use Laravelcm\Subscriptions\Traits\HasPlanSubscriptions;
 
 class CentralUser extends Model implements SyncMaster
 {
     // Note that we force the central connection on this model
-    use HasFactory, ResourceSyncing, CentralConnection;
+    use HasFactory, ResourceSyncing, CentralConnection, HasPlanSubscriptions;
 
     protected $guarded = [];
     public $timestamps = false;
     public $table = 'users';
+    public $fillable = [
+        'name',
+        'email',
+        'password',
+        'phone',
+        'global_id',
+    ];
 
     public function tenants(): BelongsToMany
     {

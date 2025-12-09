@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('name')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable()->unique();
             $table->string('avatar')->nullable()->default('users/default.png');
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->string('global_id')->nullable()->unique();
             $table->rememberToken();
             $table->string('first_name')->nullable();
@@ -40,7 +40,7 @@ return new class extends Migration
             $table->dateTime('logout_at')->nullable();
             $table->string('default_language', 2)->nullable();
             $table->timestamps();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('account_verified_at')->nullable();
         });
     }
 

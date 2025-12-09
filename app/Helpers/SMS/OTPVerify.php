@@ -18,10 +18,12 @@ class OTPVerify
         }
         $sid    = env('TWILIO_ACCOUNT_SID');
         $token  = env('TWILIO_AUTH_TOKEN');
+        $service_sid  = env('TWILIO_SERVICE_SID');
+        
         $twilio = new Client($sid, $token);
 
         try {
-            $verification = $twilio->verify->v2->services("VAed4995aefaadb7b05c33f29429029557")
+            $verification = $twilio->verify->v2->services($service_sid)
                 ->verifications
                 ->create($request->phone, "sms");
         } catch (\Throwable $th) {
@@ -41,10 +43,11 @@ class OTPVerify
 
         $sid    = env('TWILIO_ACCOUNT_SID');
         $token  = env('TWILIO_AUTH_TOKEN');
+        $service_sid  = env('TWILIO_SERVICE_SID');
         $twilio = new Client($sid, $token);
 
         try {
-            $verification_check = $twilio->verify->v2->services("VAed4995aefaadb7b05c33f29429029557")
+            $verification_check = $twilio->verify->v2->services($service_sid)
                 ->verificationChecks
                 ->create(
                     [

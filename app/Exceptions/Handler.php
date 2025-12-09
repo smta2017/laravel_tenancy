@@ -7,7 +7,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
-use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Helpers\Helper;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -30,7 +30,7 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        if (\env('APP_ENV') != 'local'){
+        if (!Helper::TestedEnv()){
             if ($exception instanceof ModelNotFoundException) {
                 return $this->sendError($exception->getMessage());
             } else if ($exception instanceof MethodNotAllowedHttpException) {

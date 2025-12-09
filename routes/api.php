@@ -41,7 +41,7 @@ Route::post('/create-tenant', [RegisterController::class, 'createTenant']);
 Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
     ->except(['create', 'edit']);
 
-Route::get('email/verify/{id}',  [VerificationController::class, 'verify'])->name('verification.verify'); // Make sure to keep this as your route name
+Route::get('email/verify/{id}',  [VerificationController::class, 'verify'])->name('verification.verify');
 Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 //=======================================================================
 
@@ -52,8 +52,10 @@ Route::group(['prefix' => 'tenant'], function () {
     Route::group(['prefix' => 'password'], function () {
         Route::post('/email', [ResetPasswordController::class, 'sendResetLinkEmail']);
         Route::get('/reset', [ResetPasswordController::class, 'resetPassword']);
+        
+        Route::post('/phone', [ResetPasswordController::class, 'sendResetPhoneOTP']);
+        Route::get('/reset-phone', [ResetPasswordController::class, 'resetPassword']);
 
-        // http://bassel.saas.test/api/password/reset?token=http%3A%2F%2Fsameh.test%2Fapi%2Fpassword%2Freset%3Ftoken%3D572ed3ffb35c100a002dfa737e3f004ffb8862b7577b358f51be1502a98cb014%26email%3Dbassel%2540email.com&email=bassel%40email.com
 
     });
 });

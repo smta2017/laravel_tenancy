@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,28 +16,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //=============================================================
-        //=============================================================
-        //===============          with laravel valet      ============
-        //===============    create v.host with v.domain   ============
-        //===============         named saas.test          ============
-        //=============================================================
-        //=============================================================
+       
+      
 
-        $tenants = ['foo','bar','sab'];
+        $this->call([
+            MainSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            // TesureSeeder::class,
+            // CentralUserSeeder::class,
+        ]);
 
-        // foreach ($tenants as $value) {
-        //     if(!Tenant::find($value)){
-        //         $tenant = Tenant::create(['id' => $value]);
-        //         $tenant->domains()->create(['domain' => $value .'.saas.test']);
-        //     }
-        // }
-
-        // Tenant::all()->runForEach(function ($tn) {
-        //     User::factory(10)->create();
-        // });
 
         // \App\Models\CentralUser::factory(3)->create();
-        
+
+        $select_rundom_phone = User::select('phone')
+            ->inRandomOrder()
+            ->first();
+        $this->command->info('✅ Roles and permissions seeded successfully. phone test login--->  '.$select_rundom_phone['phone'] .'  Pass: password');
+
     }
 }
