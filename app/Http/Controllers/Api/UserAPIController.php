@@ -41,14 +41,16 @@ class UserAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        // $this->checkPermission('users.view');
-        
-        return User::all();
+        $this->checkPermission('users.view');
+
+        // return User::all();
         $users = $this->userRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
             $request->get('limit')
         );
+
+        $users->load(['roles', 'permissions']);
 
         return $this->sendResponse($users->toArray(), 'Users retrieved successfully');
     }
@@ -59,7 +61,8 @@ class UserAPIController extends AppBaseController
      */
     public function store(CreateUserAPIRequest $request): JsonResponse
     {
-        $this->checkSubscription();
+        $this->checkPermission('users.create');
+        // $this->checkSubscription();
 
         $input = $request->all();
 
@@ -76,6 +79,8 @@ class UserAPIController extends AppBaseController
      */
     public function show($id): JsonResponse
     {
+        $this->checkPermission('users.view');
+
         /** @var User $user */
         $user = $this->userRepository->find($id);
 
@@ -92,6 +97,8 @@ class UserAPIController extends AppBaseController
      */
     public function update($id, UpdateUserAPIRequest $request): JsonResponse
     {
+        $this->checkPermission('users.update');
+
         $input = $request->all();
 
         /** @var User $user */
@@ -114,6 +121,9 @@ class UserAPIController extends AppBaseController
      */
     public function destroy($id): JsonResponse
     {
+        $this->checkPermission('users.delete');
+
+
         /** @var User $user */
         $user = $this->userRepository->find($id);
 
@@ -172,6 +182,8 @@ class UserAPIController extends AppBaseController
     // api url: /api/users/{userId}/assign-role
     public function assignRoles(Request $request, $userId)
     {
+        $this->checkPermission('users.edit');
+        
         $request->validate([
             'role_ids' => 'required|array',
             'role_ids.*' => 'exists:roles,id',
@@ -187,6 +199,8 @@ class UserAPIController extends AppBaseController
 
     public function assignPermissions(Request $request, $userId)
     {
+        $this->checkPermission('users.edit');
+
         $request->validate([
             'permission_ids' => 'required|array',
             'permission_ids.*' => 'exists:permissions,id',

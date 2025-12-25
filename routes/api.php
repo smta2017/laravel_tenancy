@@ -33,13 +33,12 @@ Route::get('/csrf-token', function () {
 
 Route::middleware('auth:sanctum')->get('/protected', [UserAPIController::class, 'index']);
 
-Route::post('/send-opt', [RegisterController::class, 'sendotp']);
+Route::post('/send-otp', [RegisterController::class, 'sendotp']);
 Route::post('/verify-otp', [RegisterController::class, 'verifyotp']);
 
 Route::post('/create-tenant', [RegisterController::class, 'createTenant']);
 
-Route::resource('users', App\Http\Controllers\API\UserAPIController::class)
-    ->except(['create', 'edit']);
+Route::resource('users', App\Http\Controllers\API\CentralUserAPIController::class);
 
 Route::get('email/verify/{id}',  [VerificationController::class, 'verify'])->name('verification.verify');
 Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
@@ -48,15 +47,13 @@ Route::post('email/resend', [VerificationController::class, 'resend'])->name('ve
 Route::group(['prefix' => 'tenant'], function () {
     Route::post('login', [LoginController::class, "login"]);
     Route::post('register', [RegisterController::class, "createTenant"]);
-    
+
     Route::group(['prefix' => 'password'], function () {
-        Route::post('/email', [ResetPasswordController::class, 'sendResetLinkEmail']);
-        Route::get('/reset', [ResetPasswordController::class, 'resetPassword']);
-        
+        Route::post('/forget-password', [ResetPasswordController::class, 'sendResetLinkEmail']);
+        Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword']);
+
         Route::post('/phone', [ResetPasswordController::class, 'sendResetPhoneOTP']);
         Route::get('/reset-phone', [ResetPasswordController::class, 'resetPassword']);
-
-
     });
 });
 

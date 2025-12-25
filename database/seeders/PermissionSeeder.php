@@ -18,13 +18,14 @@ class PermissionSeeder extends Seeder
         // $guard_name = 'web';
 
         $permissions = [
-            'users.view',
+            'users.list',
             'users.create',
             'users.edit',
             'users.delete',
-            'products.view',
-            'products.edit',
-            'orders.export',
+            'cases.list',
+            'cases.create',
+            'cases.edit',
+            'cases.delete',
             'settings.access',
         ];
 
@@ -40,13 +41,14 @@ class PermissionSeeder extends Seeder
             $roles = [
                 'Admin' => $permissions, // all permissions
                 'Manager' => [
-                    'users.view',
-                    'products.view',
-                    'orders.export',
+                    'users.list',
+                    'cases.list',
+                    'cases.create'
                 ],
                 'Editor' => [
-                    'products.view',
-                    'products.edit',
+                    'users.list',
+                    'cases.list',
+                    'cases.edit'
                 ],
             ];
 

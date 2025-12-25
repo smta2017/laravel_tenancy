@@ -24,14 +24,14 @@ class MainSeeder extends Seeder
         //=============================================================
         //=============================================================
 
-        $tenants = ['1_foo', '2_bar', '3_baz', '4_basel', '5_quux', '6_corge', '7_patto', '8_garply', '9_boshy', '0_fred'];
+        $tenants = ['1_foo', '2_bar', '3_baz'];
 
         // for ($i = 0; $i < 10; $i++) {
         foreach ($tenants as $newtenant) {
 
             // $tenant = 'foo_' . time();
 
-            $newtenant = $newtenant . time();
+            // $newtenant = $newtenant . time();
 
             if (!Tenant::find($newtenant)) {
                 $tenant = Tenant::create(['id' => $newtenant]);

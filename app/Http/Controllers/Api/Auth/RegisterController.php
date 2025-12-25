@@ -11,12 +11,19 @@ use App\Models\ComfirmedPhone;
 use App\Models\Tenant;
 use App\Models\Tesure;
 use App\Models\User;
+use App\Repositories\Eloquent\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class RegisterController extends AppBaseController
 {
     use Helper;
+
+    public $userRepository;
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
     public function sendotp(Request $request)
     {
@@ -34,15 +41,26 @@ class RegisterController extends AppBaseController
         if (!$sender['status']) {
             return $this->sendError($sender['message']);
         }
-        $this->storeConfirmedPhone($request->phone);
+        // $this->storeConfirmedPhone($request->phone);
         return $this->sendSuccess('OTP success verify check!');
     }
 
     public function createTenant(CreateTenantRequest $request)
     {
-        $phone_check = $this->getConfirmedPhone($request->phone);
-        if (!$phone_check && !Helper::TestedEnv()) {
-            return $this->sendError('Phone Number is not verified.', 422);
+        // $phone_check = $this->getConfirmedPhone($request->phone);
+        // if (!$phone_check && !Helper::TestedEnv()) {
+        //     return $this->sendError('Phone Number is not verified.', 422);
+        // }
+
+        // If phone does NOT start with +20
+        if (!\Str::startsWith($request['phone'], '+2')) {
+            $request['phone'] = '+2' . ltrim($request['phone'], '+');
+        }
+
+        $sender = OTPVerify::verifyOTP($request);
+
+        if (!$sender['status']) {
+            return $this->sendError($sender['message']);
         }
 
         try {
@@ -57,7 +75,7 @@ class RegisterController extends AppBaseController
 
             // ========================================================================
 
-            $admin = $this->generateTenantAdmin($request, $tenant);
+            $admin = $this->userRepository->generateTenantAdmin($tenant, $request);
 
             // Job Send the verification email to tenant
             // SendTenantVerificationEmail::dispatch($admin)->onQueue('tenant_verify_email')->delay(now()->subSeconds(5));
@@ -77,7 +95,6 @@ class RegisterController extends AppBaseController
 
         return $this->sendResponse($tenant, 'Tenant has created as successfuly');
 
-        return $this->sendError('No verified phone found');
     }
 
     public function storeConfirmedPhone($phone, bool $status = true)
@@ -96,26 +113,33 @@ class RegisterController extends AppBaseController
         return false;
     }
 
-    public function generateTenantAdmin($request, $tenant)
-    {
+    // public function generateTenantAdmin($request, $tenant)
+    // {
 
-        $user_info = [
-            'global_id' => (string) \Str::uuid(),
-            'name' => 'admin',
-            'email' =>  $request->email,
-            'phone' =>  $request->phone,
-            'password' => \Hash::make($request['password'] ?? 'password')
-        ];
+    //     $user_info = [
+    //         'global_id' => (string) \Str::uuid(),
+    //         'name' => 'admin',
+    //         'email' =>  $request->email,
+    //         'phone' =>  $request->phone,
+    //         'password' => \Hash::make($request['password'] ?? 'password'),
+    //         'is_active' => true,
+    //         'account_verified_at' => \Carbon\Carbon::now(),
+    //     ];
 
-        CentralUser::create($user_info);
+    //     CentralUser::create($user_info);
 
-        tenancy()->initialize($tenant);
+    //     tenancy()->initialize($tenant);
 
-        // Create the same user in tenant DB
-        $user = User::create($user_info);
+    //     // Create the same user in tenant DB
+    //     $user = User::create($user_info);
 
-        return $user;
-    }
+    //     // Create role and assign permission
+
+
+    //     $user->assignRole('Admin');
+
+    //     return $user;
+    // }
 
     public function generateTenantUsers($request, $tenant)
     {

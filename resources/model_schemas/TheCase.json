@@ -1,0 +1,65 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "name",
+        "dbType": "string:nullable",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "code",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "case_number",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "type",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "status",
+        "dbType": "integer:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "subject",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "court",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

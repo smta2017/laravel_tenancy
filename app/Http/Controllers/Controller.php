@@ -16,8 +16,8 @@ class Controller extends BaseController
         $user = auth()->user();
 
         if (!$user->can($permission)) {
-            abort(403, 'Unauthorized');
-        }
+            return  $this->sendError("Unautherized", "You are not authorized to perform this action");
+         }
     }
 
     public function checkSubscription($subscription_name = 'main')
@@ -26,11 +26,11 @@ class Controller extends BaseController
         $subscription = $c_user->planSubscription($subscription_name);
 
         if (!$subscription) {
-            abort(403,'No active subscription found.');
+            return  $this->sendError("Unautherized", "No active subscription found.");
         }
 
         if (!$subscription->active()) {
-            abort(403, 'Your subscription is expired, please renew it.');
+            return  $this->sendError("Unautherized", "Your subscription is expired, please renew it.");
         }
     }
 }

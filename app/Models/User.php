@@ -66,8 +66,29 @@ class User extends Authenticatable implements Syncable
         'name',
         'email',
         'password',
+        'avatar',
         'global_id',
+        'first_name',
+        'last_name',
         'phone',
+        'nationalitie_id',
+        'd_o_b',
+        'job',
+        'website',
+        'photo',
+        'is_active',
+        'active_token',
+        'is_approved',
+        'code',
+        'is_admin',
+        'is_owner',
+        'covenantAccount_id',
+        'requestaccount_id',
+        'last_login',
+        'last_login_location',
+        'logout_at',
+        'default_language',
+        'account_verified_at',
     ];
 
     /**
@@ -90,7 +111,12 @@ class User extends Authenticatable implements Syncable
     ];
 
     public static array $rules = [
-        'name' => 'required'
+        'name' => 'required',
+        'email' => 'required|email',
+        'phone' => 'nullable|string|max:20',
+        'job' => 'nullable|string|max:100',
+        'website' => 'nullable|url|max:200',
+        'd_o_b' => 'nullable|date',
     ];
 
 

@@ -144,7 +144,7 @@ return [
 
         'seeder' => true,
 
-        'swagger' => true, // generate swagger for your APIs
+        'swagger' => false, // generate swagger for your APIs
 
         'tests' => true, // generate test cases for your APIs
 

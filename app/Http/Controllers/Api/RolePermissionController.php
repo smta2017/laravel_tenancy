@@ -13,7 +13,7 @@ class RolePermissionController extends Controller
     // Index action to list all roles and permissions
     public function index()
     {
-        $this->checkPermission('settings.access');
+        // $this->checkPermission('settings.access');
 
         $roles = Role::all();
         $permissions = Permission::all();

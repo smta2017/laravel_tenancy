@@ -71,6 +71,7 @@ Route::middleware([
             Route::get('/permissions/{permission}/roles', [RolePermissionController::class, 'getPermissionRoles']);
             // End-Permissions
 
+            Route::resource('cases', App\Http\Controllers\API\TheCaseAPIController::class)->except(['create', 'edit']);
         });
     });
     //====================================[ END - A P I  ]==============================================

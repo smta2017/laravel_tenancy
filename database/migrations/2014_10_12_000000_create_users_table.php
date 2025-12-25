@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('phone', 20)->unique()->unique();
             $table->timestamp('account_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->integer('is_active')->nullable();
             $table->string('global_id')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();

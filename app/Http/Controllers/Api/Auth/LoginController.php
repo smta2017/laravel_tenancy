@@ -28,10 +28,21 @@ class LoginController extends AppBaseController
                 return $this->sendError('Your account is not verified, please verify it first.', 403);
             }
 
+            // Check if the user is active
+            if ($current_user->is_active == false) {
+                return $this->sendError('Your account is not active, please activate it first.', 403);
+            }
+
             $sanctum_token = $request->user()->createToken('api-login-token')->plainTextToken;
             $subdomain = $tenant->id;
 
-            $current_user->load('roles', 'permissions');
+            // return all permissions in all roles
+            $permissions = $current_user->roles->pluck('permissions')->flatten();
+            $current_user->permissions = $permissions;
+            $current_user->load('roles');
+
+
+            // $current_user->load('roles.permissions', 'permissions');
             
             // Return a JSON response with the token and user details
             return  $this->sendResponse([

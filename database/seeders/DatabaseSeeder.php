@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             MainSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,
+            TheCasesTableSeeder::class,
             // TesureSeeder::class,
             // CentralUserSeeder::class,
         ]);
