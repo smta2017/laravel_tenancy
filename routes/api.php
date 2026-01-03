@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\Auth\CentralLoginController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
-use App\Http\Controllers\API\CentralUserAPIController;
+use App\Http\Controllers\API\Central\CentralUserController;
 use App\Http\Controllers\API\UserAPIController;
 use App\Http\Controllers\VerificationController;
 use App\Models\CentralUser;
@@ -41,7 +41,8 @@ Route::post('login', [CentralLoginController::class, "login"]);
 
 //users
 Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::resource('users', CentralUserAPIController::class);
+    Route::resource('users', CentralUserController::class);
+    Route::get('tenants', [CentralUserController::class, 'tenants']);
 });
 
 Route::post('/send-otp', [RegisterController::class, 'sendotp']);

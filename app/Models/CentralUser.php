@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Stancl\Tenancy\Contracts\SyncMaster;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 use Stancl\Tenancy\Database\Concerns\ResourceSyncing;
-use Laravelcm\Subscriptions\Traits\HasPlanSubscriptions;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -19,7 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
 class CentralUser extends Authenticatable implements SyncMaster
 {
     // Note that we force the central connection on this model
-    use HasApiTokens, HasFactory, ResourceSyncing, CentralConnection, HasPlanSubscriptions, Notifiable, HasRoles;
+    use HasApiTokens, HasFactory, ResourceSyncing, CentralConnection, Notifiable, HasRoles;
 
     protected $guarded = [];
     public $timestamps = false;
@@ -30,6 +29,7 @@ class CentralUser extends Authenticatable implements SyncMaster
         'password',
         'phone',
         'global_id',
+        'is_active',
     ];
 
     public function tenants(): BelongsToMany

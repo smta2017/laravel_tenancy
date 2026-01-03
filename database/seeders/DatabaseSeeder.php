@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             DropDBSeeder::class,
-            SubscriptionsSeeder::class,
+            PlansSeeder::class,
             TenantsSeeder::class,
             PermissionSeeder::class,
             RoleSeeder::class,

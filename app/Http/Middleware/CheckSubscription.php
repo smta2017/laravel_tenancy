@@ -26,6 +26,13 @@ class CheckSubscription
 
         $centralUser = $user->centralUser();
 
+       $tenant = $centralUser->Tenants->first();
+       if (!$tenant) {
+            return $this->sendError("Tenant not found.", 403);
+        }
+
+        $subscription = $tenant->subscriptions->first();
+
         if (!$centralUser) {
             return $this->sendError("Central user profile not found.", 403);
         }

@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\Central;
 
 use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\API\CreateCentralUserAPIRequest;
 use App\Http\Requests\API\UpdateCentralUserAPIRequest;
 use App\Http\Resources\CentralUserResource;
 use App\Models\CentralUser;
-use App\Repositories\CentralUserRepository;
+use App\Repositories\Central\CentralUserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 /**
- * Class CentralUserAPIController
+ * Class CentralUserController
  */
-class CentralUserAPIController extends AppBaseController
+class CentralUserController extends AppBaseController
 {
     /** @var  CentralUserRepository */
     private $centralUserRepository;
@@ -31,11 +31,9 @@ class CentralUserAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $centralUsers = $this->centralUserRepository->all(
-            $request->except(['skip', 'limit']),
-            $request->get('skip'),
-            $request->get('limit')
-        );
+        // if user has relation with tenant table don't show it
+
+        $centralUsers = $this->centralUserRepository->centralUsers();
 
         return $this->sendResponse(
             CentralUserResource::collection($centralUsers),
@@ -132,5 +130,15 @@ class CentralUserAPIController extends AppBaseController
         $centralUser->delete();
 
         return $this->sendSuccess('Central User deleted successfully');
+    }
+
+    public function tenants()
+    {
+        $tenants = \App\Models\Tenant::with(['domains', 'users'])->get();
+
+        return $this->sendResponse(
+            \App\Http\Resources\TenantResource::collection($tenants),
+            'Tenants retrieved successfully'
+        );
     }
 }

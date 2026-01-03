@@ -70,7 +70,7 @@ abstract class BaseRepository implements IBase
         $query = $this->model->newQuery();
 
         if (count($search)) {
-            foreach($search as $key => $value) {
+            foreach ($search as $key => $value) {
                 if (in_array($key, $this->getFieldsSearchable())) {
                     $query->where($key, $value);
                 }
@@ -153,4 +153,5 @@ abstract class BaseRepository implements IBase
 
         return $model->delete();
     }
+
 }

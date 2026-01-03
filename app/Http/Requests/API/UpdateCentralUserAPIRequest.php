@@ -16,7 +16,7 @@ class UpdateCentralUserAPIRequest extends FormRequest
         $id = $this->route('central_user'); // Assuming route parameter is central_user
         return [
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:users,email,' . $id,
+            'email' => 'sometimes|email',
             'password' => 'sometimes|string|min:6',
             'phone' => 'nullable|string',
         ];

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Central;
 
 use App\Models\CentralUser;
 use App\Repositories\BaseRepository;
@@ -22,5 +22,15 @@ class CentralUserRepository extends BaseRepository
     public function model(): string
     {
         return CentralUser::class;
+    }
+
+    public function tenantUsers()
+    {
+        return $this->model->whereHas('tenants')->get();
+    }
+
+    public function centralUsers()
+    {
+        return $this->model->whereDoesntHave('tenants')->get();
     }
 }
