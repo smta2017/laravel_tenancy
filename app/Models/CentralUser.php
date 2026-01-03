@@ -11,10 +11,15 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
 use Stancl\Tenancy\Database\Concerns\ResourceSyncing;
 use Laravelcm\Subscriptions\Traits\HasPlanSubscriptions;
 
-class CentralUser extends Model implements SyncMaster
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+
+class CentralUser extends Authenticatable implements SyncMaster
 {
     // Note that we force the central connection on this model
-    use HasFactory, ResourceSyncing, CentralConnection, HasPlanSubscriptions;
+    use HasApiTokens, HasFactory, ResourceSyncing, CentralConnection, HasPlanSubscriptions, Notifiable, HasRoles;
 
     protected $guarded = [];
     public $timestamps = false;

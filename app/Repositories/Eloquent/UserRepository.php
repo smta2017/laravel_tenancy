@@ -27,16 +27,7 @@ class UserRepository extends BaseRepository implements IUser
 
     public function generateTenantAdmin($tenant, $request)
     {
-        $permissions = [
-            'users.view',
-            'users.create',
-            'users.edit',
-            'users.delete',
-            'products.view',
-            'products.edit',
-            'orders.export',
-            'settings.access',
-        ];
+        $permissions = config('permissions.role_mapping.Admin');
 
         $user_info = [
             'global_id' => (string) \Str::uuid(),

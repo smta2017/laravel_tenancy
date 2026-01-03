@@ -24,6 +24,10 @@ class UserAPIController extends AppBaseController
     public function __construct(IUser $userRepo)
     {
         $this->userRepository = $userRepo;
+        $this->middleware('permission:users.view')->only(['list', 'show', 'me']);
+        $this->middleware('permission:users.create')->only(['store']);
+        $this->middleware('permission:users.update')->only(['update', 'verifyAccout', 'assignRoles', 'assignPermissions']);
+        $this->middleware('permission:users.delete')->only(['destroy']);
     }
 
 
@@ -41,7 +45,6 @@ class UserAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $this->checkPermission('users.view');
 
         // return User::all();
         $users = $this->userRepository->all(
@@ -61,8 +64,6 @@ class UserAPIController extends AppBaseController
      */
     public function store(CreateUserAPIRequest $request): JsonResponse
     {
-        $this->checkPermission('users.create');
-        // $this->checkSubscription();
 
         $input = $request->all();
 
@@ -79,7 +80,6 @@ class UserAPIController extends AppBaseController
      */
     public function show($id): JsonResponse
     {
-        $this->checkPermission('users.view');
 
         /** @var User $user */
         $user = $this->userRepository->find($id);
@@ -97,7 +97,6 @@ class UserAPIController extends AppBaseController
      */
     public function update($id, UpdateUserAPIRequest $request): JsonResponse
     {
-        $this->checkPermission('users.update');
 
         $input = $request->all();
 
@@ -121,7 +120,6 @@ class UserAPIController extends AppBaseController
      */
     public function destroy($id): JsonResponse
     {
-        $this->checkPermission('users.delete');
 
 
         /** @var User $user */
@@ -183,7 +181,7 @@ class UserAPIController extends AppBaseController
     public function assignRoles(Request $request, $userId)
     {
         $this->checkPermission('users.edit');
-        
+
         $request->validate([
             'role_ids' => 'required|array',
             'role_ids.*' => 'exists:roles,id',

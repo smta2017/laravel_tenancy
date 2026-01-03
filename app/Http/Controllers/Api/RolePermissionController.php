@@ -10,10 +10,13 @@ use Spatie\Permission\Models\Permission;
 
 class RolePermissionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:settings.access');
+    }
     // Index action to list all roles and permissions
     public function index()
     {
-        // $this->checkPermission('settings.access');
 
         $roles = Role::all();
         $permissions = Permission::all();

@@ -22,6 +22,11 @@ class TheCaseAPIController extends AppBaseController
     public function __construct(TheCaseRepository $theCaseRepo)
     {
         $this->theCaseRepository = $theCaseRepo;
+        $this->middleware('permission:cases.list')->only(['index']);
+        $this->middleware('permission:cases.create')->only(['store']);
+        $this->middleware('permission:cases.view')->only(['show']);
+        $this->middleware('permission:cases.edit')->only(['update']);
+        $this->middleware('permission:cases.delete')->only(['destroy']);
     }
 
     /**
@@ -30,8 +35,7 @@ class TheCaseAPIController extends AppBaseController
      */
     public function index(Request $request): JsonResponse
     {
-        $this->checkPermission('cases.list');
-        
+
         $theCases = $this->theCaseRepository->all(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
@@ -50,7 +54,6 @@ class TheCaseAPIController extends AppBaseController
      */
     public function store(CreateTheCaseAPIRequest $request): JsonResponse
     {
-        $this->checkPermission('cases.create');
 
         $input = $request->all();
 
@@ -68,7 +71,6 @@ class TheCaseAPIController extends AppBaseController
      */
     public function show($id): JsonResponse
     {
-        $this->checkPermission('cases.view');
         /** @var TheCase $theCase */
         $theCase = $this->theCaseRepository->find($id);
 
@@ -90,7 +92,6 @@ class TheCaseAPIController extends AppBaseController
      */
     public function update($id, UpdateTheCaseAPIRequest $request): JsonResponse
     {
-        $this->checkPermission('cases.edit');
 
         $input = $request->all();
 
@@ -119,8 +120,7 @@ class TheCaseAPIController extends AppBaseController
      */
     public function destroy($id): JsonResponse
     {
-        $this->checkPermission('cases.delete');
-        
+
         /** @var TheCase $theCase */
         $theCase = $this->theCaseRepository->find($id);
 

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends AppBaseController
 {
 
+
+
     public function login(LoginTenantRequest $request)
     {
         // Attempt to log in the CentralUser using the credentials
@@ -22,9 +24,8 @@ class LoginController extends AppBaseController
             Auth::attempt([$attempt_type => $request->identifier, 'password' => $request->password]);
             $current_user = Auth::user();
 
-
             // Check if the user's account is verified
-            if (! is_null($current_user->account_verified_at) == false) {
+            if (!is_null($current_user->account_verified_at) == false) {
                 return $this->sendError('Your account is not verified, please verify it first.', 403);
             }
 
@@ -43,7 +44,7 @@ class LoginController extends AppBaseController
 
 
             // $current_user->load('roles.permissions', 'permissions');
-            
+
             // Return a JSON response with the token and user details
             return  $this->sendResponse([
                 "user" => $current_user,

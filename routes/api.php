@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\CentralLoginController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
+use App\Http\Controllers\API\CentralUserAPIController;
 use App\Http\Controllers\API\UserAPIController;
 use App\Http\Controllers\VerificationController;
+use App\Models\CentralUser;
 use App\Models\User;
 use Doctrine\Inflector\Rules\Word;
 use Illuminate\Http\Request;
@@ -31,14 +34,21 @@ Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 });
 
-Route::middleware('auth:sanctum')->get('/protected', [UserAPIController::class, 'index']);
+// Route::middleware('auth:sanctum')->get('/protected', [UserAPIController::class, 'index']);
+
+//login
+Route::post('login', [CentralLoginController::class, "login"]);
+
+//users
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::resource('users', CentralUserAPIController::class);
+});
 
 Route::post('/send-otp', [RegisterController::class, 'sendotp']);
 Route::post('/verify-otp', [RegisterController::class, 'verifyotp']);
 
 Route::post('/create-tenant', [RegisterController::class, 'createTenant']);
 
-Route::resource('users', App\Http\Controllers\API\CentralUserAPIController::class);
 
 Route::get('email/verify/{id}',  [VerificationController::class, 'verify'])->name('verification.verify');
 Route::post('email/resend', [VerificationController::class, 'resend'])->name('verification.resend');

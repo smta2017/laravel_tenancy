@@ -15,49 +15,40 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        // $guard_name = 'web';
-
-        $permissions = [
-            'users.list',
-            'users.create',
-            'users.edit',
-            'users.delete',
-            'cases.list',
-            'cases.create',
-            'cases.edit',
-            'cases.delete',
-            'settings.access',
-        ];
-
-
+        $allPermissions = config('permissions.all');
+        $rolesData = config('permissions.role_mapping');
 
         foreach (Tenant::all() as $tenant) {
             tenancy()->initialize($tenant);
-            foreach ($permissions as $perm) {
-                Permission::firstOrCreate(['name' => $perm]);
+
+            // Ensure all permissions exist
+            foreach ($allPermissions as $perm) {
+                Permission::firstOrCreate([
+                    'name' => $perm,
+                    'guard_name' => 'web'
+                ]);
             }
 
-            // Define roles and assign permissions
-            $roles = [
-                'Admin' => $permissions, // all permissions
-                'Manager' => [
-                    'users.list',
-                    'cases.list',
-                    'cases.create'
-                ],
-                'Editor' => [
-                    'users.list',
-                    'cases.list',
-                    'cases.edit'
-                ],
-            ];
-
-            foreach ($roles as $roleName => $rolePermissions) {
+            // Create roles and sync their matching permissions
+            foreach ($rolesData as $roleName => $rolePermissions) {
                 $role = Role::firstOrCreate([
-                    'name' => $roleName
+                    'name' => $roleName,
+                    'guard_name' => 'web'
                 ]);
 
                 $role->syncPermissions($rolePermissions);
+            }
+
+            // Assign 'Admin' role to the last user of this tenant
+            $users = \App\Models\User::get();
+            for ($i = 0; $i < count($users); $i++) {
+                if ($i == 0) {
+                    $users[$i]->assignRole('Admin');
+                } elseif ($i == 1) {
+                    $users[$i]->assignRole('Manager');
+                } elseif ($i == 2) {
+                    $users[$i]->assignRole('Editor');
+                }
             }
         }
     }
