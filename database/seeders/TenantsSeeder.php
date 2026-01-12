@@ -21,7 +21,7 @@ class TenantsSeeder extends Seeder
      */
     public function run(): void
     {
-         //=============================================================
+        //=============================================================
         //=============================================================
         //===============          with laravel valet      ============
         //===============    create v.host with v.domain   ============
@@ -39,15 +39,9 @@ class TenantsSeeder extends Seeder
                 $tenant->domains()->create(['domain' => $newtenant . '.saas.test']);
 
                 tenancy()->initialize($tenant);
-           
+
                 User::factory(3)->create();
             }
         }
-
-       
     }
-    
-    
 }
-
-

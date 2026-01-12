@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Helpers\Helper;
 use App\Traits\ResponseTrait;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
@@ -27,7 +28,7 @@ class CreateTenantRequest extends FormRequest
     {
         if (Helper::TestedEnv() && $this->id == "") {
             $random_time = substr(\Carbon\Carbon::now()->timestamp, -3);
-            $tenant_id = \Str::random(2) . "_" . $random_time;
+            $tenant_id = Str::random(2) . "_" . $random_time;
             // Append a parameter to the request data
             $this->merge([
                 'id' => $tenant_id,

@@ -6,6 +6,8 @@ use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\LoginTenantRequest;
 use App\Models\CentralUser;
 use Illuminate\Support\Facades\Auth;
+use Laravelcm\Subscriptions\Models\Subscription;
+use App\Http\Resources\SubscriptionResource;
 
 class LoginController extends AppBaseController
 {
@@ -20,6 +22,11 @@ class LoginController extends AppBaseController
 
             $central_user = CentralUser::find($request->user()->id);
             $tenant = $central_user->Tenants->first();
+
+            // $subscription = $tenant->planSubscription('main')->with('plan')->first();
+
+            $subscription = Subscription::ofSubscriber($tenant)->with('plan')->first();
+
             tenancy()->initialize($tenant);
             Auth::attempt([$attempt_type => $request->identifier, 'password' => $request->password]);
             $current_user = Auth::user();
@@ -43,6 +50,7 @@ class LoginController extends AppBaseController
             $current_user->load('roles');
 
 
+
             // $current_user->load('roles.permissions', 'permissions');
 
             // Return a JSON response with the token and user details
@@ -50,6 +58,7 @@ class LoginController extends AppBaseController
                 "user" => $current_user,
                 "token" => $sanctum_token,
                 "tenant_id" => $subdomain,
+                "subscription" => new SubscriptionResource($subscription),
                 "domain" => "$subdomain.saas.test",
                 "redirectUrl" => "http://$subdomain.saas.test"
             ], 'Tenant Login successfuly');

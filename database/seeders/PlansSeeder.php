@@ -29,20 +29,22 @@ class PlansSeeder extends Seeder
             ]
         );
 
-        $plan = Plan::create([
-            'name' => 'Free',
-            'description' => 'free plan',
+        $freePlan = Plan::create([
+            'name'             => 'Free',
+            'description'      => 'Free plan',
             'price' => 0.0,
             'signup_fee' => 0.0,
-            'invoice_period' => 20,
+            'invoice_period' => 10,
             'invoice_interval' => Interval::YEAR->value,
-            'sort_order' => 1,
-            'currency' => 'EGP',
+            'trial_period' => 0,
+            'trial_interval' => Interval::DAY->value,
+            'sort_order'       => 1,
+            'currency'         => 'EGP',
         ]);
-        $planGold = Plan::create([
-            'name' => 'Gold',
-            'description' => 'Gold plan',
-            'price' => 489.0,
+        $planSilver = Plan::create([
+            'name' => 'Silver',
+            'description' => 'Silver plan',
+            'price' => 1489.0,
             'signup_fee' => 0.0,
             'invoice_period' => 1,
             'invoice_interval' => Interval::MONTH->value,
@@ -51,10 +53,10 @@ class PlansSeeder extends Seeder
             'sort_order' => 2,
             'currency' => 'EGP',
         ]);
-        $planPlatinum = Plan::create([
-            'name' => 'Platinum',
-            'description' => 'platinum plan',
-            'price' => 489.0,
+        $planGold = Plan::create([
+            'name' => 'Gold',
+            'description' => 'Gold plan',
+             'price' => 2989.0,
             'signup_fee' => 0.0,
             'invoice_period' => 1,
             'invoice_interval' => Interval::MONTH->value,
@@ -63,8 +65,20 @@ class PlansSeeder extends Seeder
             'sort_order' => 3,
             'currency' => 'EGP',
         ]);
+        // $planPlatinum = Plan::create([
+        //     'name' => 'Platinum',
+        //     'description' => 'platinum plan',
+        //     'price' => 2989.0,
+        //     'signup_fee' => 0.0,
+        //     'invoice_period' => 1,
+        //     'invoice_interval' => Interval::MONTH->value,
+        //     'trial_period' => 15,
+        //     'trial_interval' => Interval::DAY->value,
+        //     'sort_order' => 3,
+        //     'currency' => 'EGP',
+        // ]);
 
-        $plan->features()->saveMany([
+        $freePlan->features()->saveMany([
             new Feature(['name' => 'case.add', 'value' => 20, 'sort_order' => 1]),
             new Feature(['name' => 'liberary.searchs', 'value' => 10, 'sort_order' => 2]),
             new Feature(['name' => 'user.count', 'value' => 1, 'sort_order' => 3]),
@@ -72,7 +86,7 @@ class PlansSeeder extends Seeder
             // newFeature(['name' => 'listing_title_bold', 'value' => 'Y', 'sort_order' => 15])
         ]);
 
-        $planGold->features()->saveMany([
+        $planSilver->features()->saveMany([
             new Feature(['name' => 'case.add', 'value' => 200, 'sort_order' => 1]),
             new Feature(['name' => 'liberary.searchs', 'value' => 1000, 'sort_order' => 2]),
             new Feature(['name' => 'user.count', 'value' => 5, 'sort_order' => 3]),
@@ -80,7 +94,7 @@ class PlansSeeder extends Seeder
             // newFeature(['name' => 'listing_title_bold', 'value' => 'Y', 'sort_order' => 15])
         ]);
 
-        $planPlatinum->features()->saveMany([
+        $planGold->features()->saveMany([
             new Feature(['name' => 'case.add', 'value' => 'Y', 'sort_order' => 1]),
             new Feature(['name' => 'liberary.searchs', 'value' => 'Y', 'sort_order' => 2]),
             new Feature(['name' => 'user.count', 'value' => 'Y', 'sort_order' => 3]),

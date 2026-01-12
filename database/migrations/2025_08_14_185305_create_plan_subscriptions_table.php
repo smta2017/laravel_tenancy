@@ -13,7 +13,8 @@ return new class extends Migration
         Schema::create(config('laravel-subscriptions.tables.subscriptions'), function (Blueprint $table): void {
             $table->id();
 
-            $table->morphs('subscriber');
+            $table->string('subscriber_type');
+            $table->string('subscriber_id');
             $table->foreignIdFor(config('laravel-subscriptions.models.plan'));
             $table->json('name');
             $table->string('slug')->unique();

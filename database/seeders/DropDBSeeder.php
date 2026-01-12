@@ -16,5 +16,6 @@ class DropDBSeeder extends Seeder
         DB::statement('DROP DATABASE IF EXISTS tenant_1_foo');
         DB::statement('DROP DATABASE IF EXISTS tenant_2_bar');
         DB::statement('DROP DATABASE IF EXISTS tenant_3_baz');
+        DB::statement('DROP DATABASE IF EXISTS tenant_sameh');
     }
 }

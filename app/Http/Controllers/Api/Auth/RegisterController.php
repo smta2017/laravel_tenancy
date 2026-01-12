@@ -14,6 +14,9 @@ use App\Models\User;
 use App\Repositories\Eloquent\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Laravelcm\Subscriptions\Models\Plan;
+use Stancl\Tenancy\Facades\Tenancy;
+
 
 class RegisterController extends AppBaseController
 {
@@ -65,13 +68,25 @@ class RegisterController extends AppBaseController
 
         try {
             DB::beginTransaction();
-            $central_domain = config('tenancy.central_domains')[(Helper::TestedEnv()) ? 1 : 0];
+            $central_domain = config('tenancy.central_domains')[Helper::TestedEnv() ? 1 : 0];
 
-            //Create tenant
-            $tenant = Tenant::create($request->all());
+            $rr = DB::getDefaultConnection(); // mysql
 
-            //Create tenant domain
-            $tenant->domains()->create(['domain' => $request->id . '.' . $central_domain]);
+            Tenancy::central(function () use ($request, $central_domain, &$tenant, &$plan) {
+
+                $plan = Plan::first(); // mysql
+
+                $tenant = Tenant::create($request->all()); // mysql
+
+                $tenant->domains()->create([
+                    'domain' => $request->id . '.' . $central_domain
+                ]);
+
+                // Subscribe the tenant to the plan while in the central context
+                if ($plan) {
+                    $tenant->newPlanSubscription('main', $plan);
+                }
+            }); // ← tenancy context restored automatically
 
             // ========================================================================
 
@@ -94,7 +109,6 @@ class RegisterController extends AppBaseController
         DB::beginTransaction();
 
         return $this->sendResponse($tenant, 'Tenant has created as successfuly');
-
     }
 
     public function storeConfirmedPhone($phone, bool $status = true)

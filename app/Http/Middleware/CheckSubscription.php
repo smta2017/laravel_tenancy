@@ -16,7 +16,7 @@ class CheckSubscription
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $subscriptionName = 'main'): Response
+    public function handle(Request $request, Closure $next, string $subscriptionName = 'main',string $featureName = 'main'): Response
     {
         $user = auth()->user();
 
@@ -37,7 +37,7 @@ class CheckSubscription
             return $this->sendError("Central user profile not found.", 403);
         }
 
-        $subscription = $centralUser->planSubscription($subscriptionName);
+        $subscription = $centralUser->planSubscription($subscriptionName)->canUseFeature($featureName);
 
         if (!$subscription) {
             return $this->sendError("No active subscription found.", 403);
