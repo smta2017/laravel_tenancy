@@ -154,4 +154,14 @@ abstract class BaseRepository implements IBase
         return $model->delete();
     }
 
+    public function recordFeatureUsage($featureName)
+    {
+        $user = auth()->user();
+
+        $centralUser = $user->centralUser();
+
+        $tenant = $centralUser->Tenants->first();
+
+        $tenant->planSubscription('main')->recordFeatureUsage($featureName);
+    }
 }

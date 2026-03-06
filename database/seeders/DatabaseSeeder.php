@@ -34,10 +34,10 @@ class DatabaseSeeder extends Seeder
 
         // \App\Models\CentralUser::factory(3)->create();
 
-        $select_rundom_phone = User::select('phone')
-            ->inRandomOrder()
-            ->first();
-        $this->command->info('✅ Roles and permissions seeded successfully. phone test login--->  '.$select_rundom_phone['phone'] .'  Pass: password');
+        // $select_rundom_phone = User::select('phone')
+        //     ->inRandomOrder()
+        //     ->first();
+        // $this->command->info('✅ Roles and permissions seeded successfully. phone test login--->  '.$select_rundom_phone['phone'] .'  Pass: password');
 
     }
 }

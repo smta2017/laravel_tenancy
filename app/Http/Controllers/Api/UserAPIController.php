@@ -71,6 +71,11 @@ class UserAPIController extends AppBaseController
 
         $user = $this->userRepository->create($input);
 
+        $user->syncRoles($request->input('role_ids'));
+        $user->syncPermissions($request->input('permission_ids'));
+
+        $this->userRepository->recordFeatureUsage('team-members');
+
         return $this->sendResponse($user->toArray(), 'User saved successfully');
     }
 
@@ -109,7 +114,26 @@ class UserAPIController extends AppBaseController
 
         $user = $this->userRepository->update($input, $id);
 
-        return $this->sendResponse($user->toArray(), 'User updated successfully');
+        $user->syncRoles($request->input('role_ids'));
+        $user->syncPermissions($request->input('permission_ids'));
+
+        return $this->sendUserResponse($user, 'User updated successfully');
+    }
+
+    /**
+     * Display the authenticated User.
+     * GET /me
+     */
+    public function me(): JsonResponse
+    {
+        /** @var User $user */
+        $user = auth()->user();
+
+        if (empty($user)) {
+            return $this->sendError('User not found');
+        }
+
+        return $this->sendUserResponse($user, 'User retrieved successfully');
     }
 
     /**
@@ -134,23 +158,6 @@ class UserAPIController extends AppBaseController
         return $this->sendSuccess('User deleted successfully');
     }
 
-    /**
-     * Display the specified User.
-     * GET|HEAD /users/{id}
-     */
-    public function me(): JsonResponse
-    {
-        /** @var User $user */
-        $user = auth()->user();
-
-        if (empty($user)) {
-            return $this->sendError('User not found');
-        }
-
-        // user with roles and permissions
-        $user->load('roles', 'permissions');
-        return $this->sendResponse($user->toArray(), 'User retrieved successfully');
-    }
 
     public function verifyAccout(Request $request): JsonResponse
     {

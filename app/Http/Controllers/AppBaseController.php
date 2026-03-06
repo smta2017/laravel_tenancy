@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Traits\ResponseTrait;
+use App\Traits\UserContextTrait;
 use InfyOm\Generator\Utils\ResponseUtil;
 
 /**
@@ -17,4 +18,5 @@ use InfyOm\Generator\Utils\ResponseUtil;
 class AppBaseController extends Controller
 {
    use ResponseTrait;
+   use UserContextTrait;
 }

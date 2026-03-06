@@ -14,11 +14,11 @@ return [
     'all' => [
         'users.list',
         'users.create',
-        'users.edit',
+        'users.update',
         'users.delete',
         'cases.list',
         'cases.create',
-        'cases.edit',
+        'cases.update',
         'cases.delete',
         'settings.access',
     ],
@@ -36,11 +36,11 @@ return [
         'Admin' => [
             'users.list',
             'users.create',
-            'users.edit',
+            'users.update',
             'users.delete',
             'cases.list',
             'cases.create',
-            'cases.edit',
+            'cases.update',
             'cases.delete',
             'settings.access',
         ],
@@ -52,7 +52,7 @@ return [
         'Editor' => [
             'users.list',
             'cases.list',
-            'cases.edit',
+            'cases.update',
         ],
     ],
 ];

@@ -32,15 +32,12 @@ class TenantsSeeder extends Seeder
 
         $tenants = ['1_foo', '2_bar', '3_baz'];
 
+
         foreach ($tenants as $newtenant) {
 
             if (!Tenant::find($newtenant)) {
                 $tenant = Tenant::create(['id' => $newtenant]);
                 $tenant->domains()->create(['domain' => $newtenant . '.saas.test']);
-
-                tenancy()->initialize($tenant);
-
-                User::factory(3)->create();
             }
         }
     }

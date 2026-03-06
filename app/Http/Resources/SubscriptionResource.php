@@ -32,7 +32,18 @@ class SubscriptionResource extends JsonResource
                 "name" => $this->plan->name,
                 "slug" => $this->plan->slug,
                 "description" => $this->plan->description,
-            ]
+            ],
+            "features" => $this->plan->features->map(function ($feature) {
+                $usage = $this->usage->where('feature_id', $feature->id)->first();
+                return [
+                    "id" => $feature->id,
+                    "name" => $feature->name,
+                    "slug" => $feature->slug,
+                    "value" => $feature->value,
+                    "used" => $usage ? $usage->used : 0,
+                    "description" => $feature->description,
+                ];
+            }),
 
         ];
     }

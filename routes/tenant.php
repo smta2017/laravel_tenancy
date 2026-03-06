@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\RolePermissionController;
 use App\Http\Controllers\API\UserAPIController;
@@ -43,8 +44,8 @@ Route::middleware([
 
         Route::group(['middleware' => 'auth:sanctum'], function () {
             
-            Route::get('/users', [UserAPIController::class, 'index']);
-            Route::post('/users', [UserAPIController::class, 'store']);
+            Route::resource('/users', UserAPIController::class);
+            // Route::post('/users', [UserAPIController::class, 'store']);
             Route::put('/users/verify-accout', [UserAPIController::class, 'verifyAccout']);
             Route::put('/users/{id}', [UserAPIController::class, 'update']);
             
@@ -55,7 +56,7 @@ Route::middleware([
 
 
             Route::group(['prefix' => 'auth'], function () {
-                Route::get('/me', [UserAPIController::class, 'me']);
+                Route::get('/me', [LoginController::class, 'me']);
             });
 
             // Permissions

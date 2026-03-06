@@ -75,7 +75,7 @@ Route::group(['prefix' => 'tenant'], function () {
 });
 
 // Password reset link request routes...
-Route::post('password/reset', 'fack@fack')->name('password.reset');
+// Route::post('password/reset', 'fack@fack')->name('password.reset');
 
 
 //--------------------------------------------------------------------------------
