@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\RolePermissionController;
 use App\Http\Controllers\API\UserAPIController;
+use App\Http\Controllers\API\NotificationController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -43,12 +44,19 @@ Route::middleware([
         Route::get('/tenant/password/reset', [ResetPasswordController::class, 'resetPassword']);
 
         Route::group(['middleware' => 'auth:sanctum'], function () {
-            
+
+            // Notifications
+            Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+            Route::put('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+            Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+            Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
+            Route::get('/notifications', [NotificationController::class, 'index']);
+
             Route::resource('/users', UserAPIController::class);
             // Route::post('/users', [UserAPIController::class, 'store']);
             Route::put('/users/verify-accout', [UserAPIController::class, 'verifyAccout']);
             Route::put('/users/{id}', [UserAPIController::class, 'update']);
-            
+
             // assign-role   
             Route::post('/users/{id}/assign-roles', [UserAPIController::class, 'assignRoles']);
             // assign-permission

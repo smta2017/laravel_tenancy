@@ -16,7 +16,7 @@ class CheckSubscription
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $subscriptionName = 'main',string $featureName = 'main'): Response
+    public function handle(Request $request, Closure $next, string $subscriptionName = 'main', string $featureName = 'main'): Response
     {
         $user = auth()->user();
 
@@ -24,27 +24,39 @@ class CheckSubscription
             return $this->sendError("Unauthorized", 401);
         }
 
-        $centralUser = $user->centralUser();
+        $tenant = tenant();
 
-       $tenant = $centralUser->Tenants->first();
-       if (!$tenant) {
+        if (!$tenant) {
             return $this->sendError("Tenant not found.", 403);
         }
 
-        $subscription = $tenant->subscriptions->first();
+        // Keep a reference to the active connection
+        $previousConnection = \Illuminate\Support\Facades\DB::getDefaultConnection();
+        \Illuminate\Support\Facades\DB::setDefaultConnection('mysql');
 
-        if (!$centralUser) {
-            return $this->sendError("Central user profile not found.", 403);
-        }
+        $result = tenancy()->central(function () use ($tenant, $subscriptionName, $featureName) {
+            $subscription = $tenant->planSubscription($subscriptionName);
 
-        $subscription = $centralUser->planSubscription($subscriptionName)->canUseFeature($featureName);
+            if (!$subscription) {
+                return ["error" => "No active subscription found."];
+            }
 
-        if (!$subscription) {
-            return $this->sendError("No active subscription found.", 403);
-        }
+            if (!$subscription->active()) {
+                return ["error" => "Your subscription is expired, please renew it."];
+            }
 
-        if (!$subscription->active()) {
-            return $this->sendError("Your subscription is expired, please renew it.", 403);
+            if (!$subscription->canUseFeature($featureName)) {
+                return ["error" => "Your plan limit for this feature has been reached."];
+            }
+
+            return true;
+        });
+
+        // Restore the previous DB connection
+        \Illuminate\Support\Facades\DB::setDefaultConnection($previousConnection);
+
+        if (is_array($result)) {
+            return $this->sendError($result['error'], 403);
         }
 
         return $next($request);

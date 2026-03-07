@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Http\Resources\PermissionResource;
 use App\Http\Resources\SubscriptionResource;
 use Illuminate\Support\Facades\DB;
 use Laravelcm\Subscriptions\Models\Subscription;
@@ -18,9 +19,8 @@ trait UserContextTrait
      */
     public function sendUserResponse($user, $message, $token = null)
     {
-        // Load roles with their permissions and direct permissions
-        // $user->load(['roles.permissions', 'permissions']);
-        $user->permissions = $user->roles->pluck('permissions')->flatten()->merge($user->permissions)->unique('id')->values();
+        $mixed_permissions = array_merge($user->roles->pluck('permissions')->flatten()->toArray(), $user->permissions->toArray());
+        $user->all_permissions = PermissionResource::collection($mixed_permissions);
 
         $tenant = tenant();
         $subdomain = $tenant->id;

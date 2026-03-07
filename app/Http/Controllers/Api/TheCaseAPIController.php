@@ -27,6 +27,7 @@ class TheCaseAPIController extends AppBaseController
         $this->middleware('permission:cases.view')->only(['show']);
         $this->middleware('permission:cases.update')->only(['update']);
         $this->middleware('permission:cases.delete')->only(['destroy']);
+        $this->middleware('subscribed:main,total-cases')->only(['store']);
     }
 
     /**
@@ -54,12 +55,9 @@ class TheCaseAPIController extends AppBaseController
      */
     public function store(CreateTheCaseAPIRequest $request): JsonResponse
     {
-
         $input = $request->all();
 
         $theCase = $this->theCaseRepository->create($input);
-
-        $this->theCaseRepository->recordFeatureUsage('total-cases');
 
         return $this->sendResponse(
             new TheCaseResource($theCase),
@@ -94,7 +92,6 @@ class TheCaseAPIController extends AppBaseController
      */
     public function update($id, UpdateTheCaseAPIRequest $request): JsonResponse
     {
-
         $input = $request->all();
 
         /** @var TheCase $theCase */
