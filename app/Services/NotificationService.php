@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Notification;
+use App\Models\CentralNotification;
 
 class NotificationService
 {
@@ -57,6 +58,28 @@ class NotificationService
     }
 
     /**
+     * Send a central notification to multiple users.
+     */
+    public static function sendCentralToMany(array $userIds, string $title, string $message, string $type = 'info', ?array $data = null): void
+    {
+        $payload = [];
+        $now = now();
+        foreach ($userIds as $userId) {
+            $payload[] = [
+                'user_id'    => $userId,
+                'title'      => $title,
+                'message'    => $message,
+                'type'       => $type,
+                'data'       => $data ? json_encode($data) : null,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ];
+        }
+
+        CentralNotification::insert($payload);
+    }
+
+    /**
      * Send a notification to all Admin users.
      */
     public static function notifyAdmins(string $title, string $message, string $type = 'info', ?array $data = null): void
@@ -65,6 +88,31 @@ class NotificationService
         if (!empty($adminIds)) {
             self::sendToMany($adminIds, $title, $message, $type, $data);
         }
+    }
+
+    /**
+     * Send a notification to all Central Admin users.
+     */
+    public static function notifyCentralAdmins(string $title, string $message, string $type = 'info', ?array $data = null): void
+    {
+        // Central users are in the 'mysql' (central) connection
+        $adminIds = \App\Models\CentralUser::all()->pluck('id')->toArray();
+        if (!empty($adminIds)) {
+            self::sendCentralToMany($adminIds, $title, $message, $type, $data);
+        }
+    }
+
+    /**
+     * Notify central admins when a new tenant is created.
+     */
+    public static function tenantCreatedNotify($tenant): void
+    {
+        self::notifyCentralAdmins(
+            'New Tenant Registered',
+            'A new tenant has been created: ' . $tenant->id . ' (' . ($tenant->name ?? 'N/A') . ')',
+            'info',
+            ['tenant_id' => $tenant->id]
+        );
     }
 
     /**

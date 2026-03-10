@@ -3,10 +3,14 @@
 namespace App\Observers;
 
 use App\Models\TheCase;
+use App\Models\User;
+use App\Notifications\NewCaseNotification;
+use Illuminate\Support\Facades\Notification;
 
 class TheCaseObserver
 {
-    public function creating(TheCase $theCase) {
+    public function creating(TheCase $theCase)
+    {
         // check subscription if allowed to add cases based on tenant limitation, use CheckSubscription middleware
     }
 
@@ -16,7 +20,7 @@ class TheCaseObserver
     public function created(TheCase $theCase): void
     {
         app(\App\Repositories\TheCaseRepository::class)->recordFeatureUsage('total-cases');
-        \App\Services\NotificationService::caseAddNotify($theCase);
+        Notification::send(User::role('Admin')->get(), new NewCaseNotification("New case added", auth()->user(), $theCase));
     }
 
     /**
@@ -24,7 +28,7 @@ class TheCaseObserver
      */
     public function updated(TheCase $theCase): void
     {
-        \App\Services\NotificationService::caseUpdateNotify($theCase);
+        Notification::send(User::role('Admin')->get(), new NewCaseNotification("Case updated", auth()->user(), $theCase));
     }
 
     /**

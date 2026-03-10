@@ -4,9 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
-class Notification extends Model
+class CentralNotification extends Model
 {
+    use HasFactory, CentralConnection;
+
+    protected $connection = 'mysql';
+
+    protected $table = 'notifications';
+
     protected $fillable = [
         'user_id',
         'title',

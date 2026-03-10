@@ -20,6 +20,8 @@ class CentralUser extends Authenticatable implements SyncMaster
     // Note that we force the central connection on this model
     use HasApiTokens, HasFactory, ResourceSyncing, CentralConnection, Notifiable, HasRoles;
 
+    protected $connection = 'mysql';
+
     protected $guarded = [];
     public $timestamps = false;
     public $table = 'users';

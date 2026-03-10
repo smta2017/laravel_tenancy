@@ -8,12 +8,15 @@ use App\Http\Controllers\AppBaseController;
 use App\Http\Requests\CreateTenantRequest;
 use App\Models\CentralUser;
 use App\Models\ComfirmedPhone;
+use Illuminate\Support\Facades\Notification;
 use App\Models\Tenant;
 use App\Models\Tesure;
 use App\Models\User;
+use App\Notifications\NewTenantNotification;
 use App\Repositories\Eloquent\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Laravelcm\Subscriptions\Models\Plan;
 use Stancl\Tenancy\Facades\Tenancy;
 
@@ -37,6 +40,17 @@ class RegisterController extends AppBaseController
         return $this->sendSuccess('OTP sent success!');
     }
 
+    public function validateRegister(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|unique:tenants,id',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|unique:users,phone',
+        ]);
+
+        return $this->sendSuccess('Validation passed');
+    }
+
 
     public function verifyotp(Request $request)
     {
@@ -56,8 +70,8 @@ class RegisterController extends AppBaseController
         // }
 
         // If phone does NOT start with +20
-        if (!\Str::startsWith($request['phone'], '+2')) {
-            $request['phone'] = '+2' . ltrim($request['phone'], '+');
+        if (!\Str::startsWith($request->input('phone'), '+2')) {
+            $request->merge(['phone' => '+2' . ltrim($request->input('phone'), '+')]);
         }
 
         $sender = OTPVerify::verifyOTP($request);
@@ -79,13 +93,16 @@ class RegisterController extends AppBaseController
                 $tenant = Tenant::create($request->all()); // mysql
 
                 $tenant->domains()->create([
-                    'domain' => $request->id . '.' . $central_domain
+                    'domain' => $request->input('id') . '.' . $central_domain
                 ]);
 
                 // Subscribe the tenant to the plan while in the central context
                 if ($plan) {
                     $tenant->newPlanSubscription('main', $plan);
                 }
+                // notify central users
+                Notification::send(CentralUser::find(1), new NewTenantNotification("New tenant added", $tenant));
+
             }); // ← tenancy context restored automatically
 
             // ========================================================================

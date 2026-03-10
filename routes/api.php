@@ -42,6 +42,7 @@ Route::post('login', [CentralLoginController::class, "login"]);
 
 use App\Http\Controllers\API\Central\SubscriptionController;
 use App\Http\Controllers\API\Central\TenantController;
+use App\Http\Controllers\API\NotificationController;
 
 //users
 Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -49,11 +50,19 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('tenants', TenantController::class);
     Route::resource('plans', PlanController::class);
     Route::resource('subscriptions', SubscriptionController::class);
+
+    // Notifications
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount']);
+    Route::put('/notifications/read-all', [NotificationController::class, 'markAllAsRead']);
+    Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+    Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
+    Route::get('/notifications', [NotificationController::class, 'index']);
 });
 
 Route::post('/send-otp', [RegisterController::class, 'sendotp']);
 Route::post('/verify-otp', [RegisterController::class, 'verifyotp']);
 
+Route::post('/validate-register', [RegisterController::class, 'validateRegister']);
 Route::post('/create-tenant', [RegisterController::class, 'createTenant']);
 
 

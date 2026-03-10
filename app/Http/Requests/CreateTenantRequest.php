@@ -44,8 +44,9 @@ class CreateTenantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required',
-            'phone' => 'required|numeric',
+            'id' => 'required|unique:tenants,id',
+            'phone' => 'required|unique:users,phone',
+            'email' => 'required|email|unique:users,email',
             'address' => 'string|nullable',
         ];
     }

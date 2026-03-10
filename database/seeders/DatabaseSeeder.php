@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
             PlansSeeder::class,
             TenantsSeeder::class,
             PermissionSeeder::class,
+            RoleSeeder::class,
             SubscriptionsSeeder::class,
-            // RoleSeeder::class,
-            TheCasesTableSeeder::class,
+            // TheCasesTableSeeder::class,
             // TesureSeeder::class,
             // CentralUserSeeder::class,
         ]);

@@ -4,18 +4,35 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\AppBaseController;
 use App\Models\Notification;
+use App\Models\CentralNotification;
 use Illuminate\Http\JsonResponse;
 
 class NotificationController extends AppBaseController
 {
     /**
-     * Get unread notifications count for the authenticated user.
-     *
-     * @return JsonResponse
+     * Get the authenticated user with explicit model based on context.
+     * This ensures that notifications are fetched using the correct notifiable_type.
      */
+    protected function getNotifiableUser()
+    {
+        $user = auth()->user();
+        if (!$user) return null;
+
+        if (!tenant() && !($user instanceof \App\Models\CentralUser)) {
+            // If we are on central domain but user is not CentralUser instance, 
+            // try to find them as CentralUser to align with database notifiable_type
+            return \App\Models\CentralUser::find($user->getAuthIdentifier());
+        }
+
+        return $user;
+    }
+
     public function unreadCount(): JsonResponse
     {
-        $count = Notification::forUser(auth()->id())->unread()->count();
+        $user = $this->getNotifiableUser();
+        if (!$user) return $this->sendError('Unauthorized', 401);
+
+        $count = $user->unreadNotifications()->count();
         return $this->sendResponse(['count' => $count], 'Unread notifications count retrieved successfully');
     }
 
@@ -26,7 +43,10 @@ class NotificationController extends AppBaseController
      */
     public function index(): JsonResponse
     {
-        $notifications = Notification::forUser(auth()->id())
+        $user = $this->getNotifiableUser();
+        if (!$user) return $this->sendError('Unauthorized', 401);
+
+        $notifications = $user->notifications()
             ->latest()
             ->paginate(15);
 
@@ -39,9 +59,12 @@ class NotificationController extends AppBaseController
      * @param int $id
      * @return JsonResponse
      */
-    public function markAsRead(int $id): JsonResponse
+    public function markAsRead(string $id): JsonResponse
     {
-        $notification = Notification::forUser(auth()->id())->findOrFail($id);
+        $user = $this->getNotifiableUser();
+        if (!$user) return $this->sendError('Unauthorized', 401);
+
+        $notification = $user->notifications()->findOrFail($id);
         $notification->markAsRead();
 
         return $this->sendResponse($notification, 'Notification marked as read');
@@ -54,9 +77,10 @@ class NotificationController extends AppBaseController
      */
     public function markAllAsRead(): JsonResponse
     {
-        Notification::forUser(auth()->id())
-            ->unread()
-            ->update(['read_at' => now()]);
+        $user = $this->getNotifiableUser();
+        if (!$user) return $this->sendError('Unauthorized', 401);
+
+        $user->unreadNotifications->markAsRead();
 
         return $this->sendSuccess('All notifications marked as read');
     }
@@ -67,9 +91,12 @@ class NotificationController extends AppBaseController
      * @param int $id
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(string $id): JsonResponse
     {
-        $notification = Notification::forUser(auth()->id())->findOrFail($id);
+        $user = $this->getNotifiableUser();
+        if (!$user) return $this->sendError('Unauthorized', 401);
+
+        $notification = $user->notifications()->findOrFail($id);
         $notification->delete();
 
         return $this->sendSuccess('Notification deleted successfully');

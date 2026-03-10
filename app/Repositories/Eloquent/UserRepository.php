@@ -31,7 +31,7 @@ class UserRepository extends BaseRepository implements IUser
 
         $user_info = [
             'global_id' => (string) \Str::uuid(),
-            'name' => 'admin',
+            'name' => $tenant->id,
             'email' =>  $request->email,
             'phone' =>  $request->phone,
             'password' => \Hash::make($request['password'] ?? 'password'),

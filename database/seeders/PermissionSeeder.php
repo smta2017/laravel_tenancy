@@ -16,7 +16,6 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $allPermissions = config('permissions.all');
-        $rolesData = config('permissions.role_mapping');
 
         foreach (Tenant::all() as $tenant) {
             tenancy()->initialize($tenant);
@@ -28,28 +27,7 @@ class PermissionSeeder extends Seeder
                     'guard_name' => 'web'
                 ]);
             }
-
-            // Create roles and sync their matching permissions
-            foreach ($rolesData as $roleName => $rolePermissions) {
-                $role = Role::firstOrCreate([
-                    'name' => $roleName,
-                    'guard_name' => 'web'
-                ]);
-
-                $role->syncPermissions($rolePermissions);
-            }
-
-            // Assign 'Admin' role to the last user of this tenant
-            $users = \App\Models\User::get();
-            for ($i = 0; $i < count($users); $i++) {
-                if ($i == 0) {
-                    $users[$i]->assignRole('Admin');
-                } elseif ($i == 1) {
-                    $users[$i]->assignRole('Manager');
-                } elseif ($i == 2) {
-                    $users[$i]->assignRole('Editor');
-                }
-            }
+            \App\Models\User::factory()->count(3)->create();
         }
     }
 }

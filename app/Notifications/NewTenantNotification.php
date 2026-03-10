@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Notification;
+
+class NewTenantNotification extends Notification
+{
+    use Queueable;
+
+    protected $message;
+    protected $tenant;
+    /**
+     * Create a new notification instance.
+     */
+    public function __construct($message = '', $tenant)
+    {
+        $this->message = $message;
+        $this->tenant = $tenant;
+        //
+    }
+
+    /**
+     * Get the notification's delivery channels.
+     *
+     * @return array<int, string>
+     */
+    public function via(object $notifiable): array
+    {
+        return ['mail', 'database'];
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): MailMessage
+    {
+        return (new MailMessage)
+                    ->line($this->message)
+                    ->line('Tenant ID: ' . $this->tenant->id)
+                    ->action('View Tenant', url('/tenants/' . $this->tenant->id))
+                    ->line('Thank you for using our application!');
+    }
+
+    public function toDatabase($notifiable)
+    {
+        return [
+            'title' => 'New Tenant Added',
+            'message' => "Tenant ID: " . $this->tenant->id,
+            'type' => 'info',
+            'url' => '/tenants/' . $this->tenant->id
+        ];
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(object $notifiable): array
+    {
+        return [
+            'title' => 'New Tenant Added',
+            'message' => $this->message,
+            'type' => 'info',
+            'tenant_id' => $this->tenant->id,
+            'url' => '/tenants/' . $this->tenant->id
+        ];
+    }
+}

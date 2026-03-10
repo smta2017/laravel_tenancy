@@ -16,7 +16,7 @@ class CheckSubscription
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $subscriptionName = 'main', string $featureName = 'main'): Response
+    public function handle(Request $request, Closure $next, string $subscriptionName, string $featureName): Response
     {
         $user = auth()->user();
 
@@ -45,8 +45,12 @@ class CheckSubscription
                 return ["error" => "Your subscription is expired, please renew it."];
             }
 
-            if (!$subscription->canUseFeature($featureName)) {
-                return ["error" => "Your plan limit for this feature has been reached."];
+            $usage = $subscription->usage()->byFeatureSlug($featureName, $subscription->plan_id)->first();
+
+            if ($usage != null) {
+                if (!$subscription->canUseFeature($featureName)) {
+                    return ["error" => "Your plan limit for this feature has been reached."];
+                }
             }
 
             return true;
