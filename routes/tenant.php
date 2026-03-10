@@ -65,6 +65,7 @@ Route::middleware([
 
             Route::group(['prefix' => 'auth'], function () {
                 Route::get('/me', [LoginController::class, 'me']);
+                Route::post('/me/image', [LoginController::class, 'updateProfileImage']);
             });
 
             // Permissions
