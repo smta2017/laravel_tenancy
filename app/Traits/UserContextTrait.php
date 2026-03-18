@@ -34,7 +34,7 @@ trait UserContextTrait
         $data = [
             "user" => $user,
             "tenant_id" => $subdomain,
-            "subscription" => new SubscriptionResource($subscription),
+            "subscription" => $user->hasRole('Admin') ? new SubscriptionResource($subscription) : null,
             "domain" => "$subdomain.saas.test",
             "redirectUrl" => "http://$subdomain.saas.test"
         ];
