@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\RolePermissionController;
 use App\Http\Controllers\API\UserAPIController;
 use App\Http\Controllers\API\NotificationController;
+use App\Http\Controllers\API\TenantSubscriptionController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -82,6 +83,10 @@ Route::middleware([
             // End-Permissions
 
             Route::resource('cases', App\Http\Controllers\API\TheCaseAPIController::class)->except(['create', 'edit']);
+
+            // Subscription Management
+            Route::get('/available-plans', [TenantSubscriptionController::class, 'availablePlans']);
+            Route::post('/upgrade-plan', [TenantSubscriptionController::class, 'upgradePlan']);
         });
     });
     //====================================[ END - A P I  ]==============================================

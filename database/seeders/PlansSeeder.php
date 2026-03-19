@@ -97,7 +97,7 @@ class PlansSeeder extends Seeder
         $planGold->features()->saveMany([
             new Feature(['name' => 'Total_Cases', 'value' => 'Y', 'sort_order' => 1]),
             new Feature(['name' => 'Liberary_Searchs', 'value' => 'Y', 'sort_order' => 2]),
-            new Feature(['name' => 'Team_members', 'value' => 'Y', 'sort_order' => 3]),
+            new Feature(['name' => 'Team_Members', 'value' => 'Y', 'sort_order' => 3]),
             // newFeature(['name' => 'user.add', 'value' => 30, 'sort_order' => 10, 'resettable_period' => 1, 'resettable_interval' => 'month']),
             // newFeature(['name' => 'listing_title_bold', 'value' => 'Y', 'sort_order' => 15])
         ]);
