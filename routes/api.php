@@ -40,6 +40,7 @@ Route::get('/csrf-token', function () {
 //login
 Route::post('login', [CentralLoginController::class, "login"]);
 
+use App\Http\Controllers\API\Central\FeatureController;
 use App\Http\Controllers\API\Central\SubscriptionController;
 use App\Http\Controllers\API\Central\TenantController;
 use App\Http\Controllers\API\NotificationController;
@@ -49,6 +50,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::resource('users', CentralUserController::class);
     Route::resource('tenants', TenantController::class);
     Route::resource('plans', PlanController::class);
+    Route::resource('features', FeatureController::class);
     Route::resource('subscriptions', SubscriptionController::class);
 
     // Notifications
