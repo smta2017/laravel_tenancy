@@ -2,65 +2,65 @@
 
 namespace App\Http\Controllers\API\Central;
 
-use App\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Laravelcm\Subscriptions\Models\Feature;
-use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
-class FeatureController extends AppBaseController
+class FeatureController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        $features = Feature::orderBy('sort_order', 'asc')->get();
-        return $this->sendResponse($features, 'Features retrieved successfully');
+        //
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string',
-            'code' => 'required|string|unique:features,code',
-            'description' => 'nullable|string',
-            'value' => 'required|string',
-            'sort_order' => 'integer',
-        ]);
-
-        $feature = Feature::create($validated);
-
-        return $this->sendResponse($feature, 'Feature created successfully');
+        //
     }
 
-    public function show($id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(Feature $feature)
     {
-        $feature = Feature::find($id);
-        if (!$feature) return $this->sendError('Feature not found');
-        return $this->sendResponse($feature, 'Feature retrieved successfully');
+        //
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Feature $feature)
     {
-        $feature = Feature::find($id);
-        if (!$feature) return $this->sendError('Feature not found');
-
-        $validated = $request->validate([
-            'name' => 'string',
-            'code' => 'string|unique:features,code,' . $id,
-            'description' => 'nullable|string',
-            'value' => 'string',
-            'sort_order' => 'integer',
-        ]);
-
-        $feature->update($validated);
-
-        return $this->sendResponse($feature, 'Feature updated successfully');
+        //
     }
 
-    public function destroy($id)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Feature $feature)
     {
-        $feature = Feature::find($id);
-        if (!$feature) return $this->sendError('Feature not found');
+        //
+    }
 
-        $feature->delete();
-        return $this->sendResponse($id, 'Feature deleted successfully');
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Feature $feature)
+    {
+        //
     }
 }
