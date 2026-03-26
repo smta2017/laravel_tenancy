@@ -61,6 +61,11 @@ class Handler extends ExceptionHandler
         });
     }
 
+    protected function unauthenticated($request, \Illuminate\Auth\AuthenticationException $exception)
+    {
+        return $this->sendError($exception->getMessage(), 401);
+    }
+
 
     private function getMySqlError($code)
     {
