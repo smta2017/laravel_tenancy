@@ -134,6 +134,52 @@ Route::middleware([
             Route::resource('case-details-clients', App\Http\Controllers\API\CaseDetailsClientAPIController::class)
                 ->except(['create', 'edit']);
             Route::get('/translations', [\App\Http\Controllers\API\TranslationController::class, 'index']);
+
+
+            Route::resource('case-states', App\Http\Controllers\API\CaseStateAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('attribute-opponents', App\Http\Controllers\API\AttributeOpponentAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('bands', App\Http\Controllers\API\BandAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('contracts', App\Http\Controllers\API\ContractAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('contract-bands', App\Http\Controllers\API\ContractBandAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('case-types', App\Http\Controllers\API\CaseTypeAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('the-cases', App\Http\Controllers\API\TheCaseAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('litigation-authority-types', App\Http\Controllers\API\LitigationAuthorityTypeAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('litigation-levels', App\Http\Controllers\API\LitigationLevelAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('litigation-authorities', App\Http\Controllers\API\LitigationAuthorityAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('case-details', App\Http\Controllers\API\CaseDetailsAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('attaches', App\Http\Controllers\API\AttachAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('clients', App\Http\Controllers\API\ClientAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('client-attaches', App\Http\Controllers\API\ClientAttachAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('case-details-clients', App\Http\Controllers\API\CaseDetailsClientAPIController::class)
+                ->except(['create', 'edit']);
         });
     });
     //====================================[ END - A P I  ]==============================================
