@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Tenant;
-use App\Models\TheCase;
 use Illuminate\Database\Seeder;
 
 class TheCasesTableSeeder extends Seeder
@@ -17,7 +16,7 @@ class TheCasesTableSeeder extends Seeder
     {
         foreach (Tenant::all() as $tenant) {
             tenancy()->initialize($tenant);
-            TheCase::factory()->count(10)->create();
+            \App\Models\TheCase::factory()->count(3)->create();
         }
     }
 }

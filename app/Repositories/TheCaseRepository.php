@@ -8,13 +8,14 @@ use App\Repositories\BaseRepository;
 class TheCaseRepository extends BaseRepository
 {
     protected $fieldSearchable = [
-        'name',
+        'AutoNumber',
         'code',
         'case_number',
-        'type',
-        'status',
         'subject',
-        'court',
+        'type_id',
+        'status_id',
+        'contract_id',
+        'created_by',
         'created_at',
         'updated_at'
     ];
@@ -27,16 +28,5 @@ class TheCaseRepository extends BaseRepository
     public function model(): string
     {
         return TheCase::class;
-    }
-
-    public function recordFeatureUsage($featureName)
-    {
-        $user = auth()->user();
-
-        $centralUser = $user->centralUser();
-
-        $tenant = $centralUser->Tenants->first();
-
-        $tenant->planSubscription('main')->recordFeatureUsage($featureName);
     }
 }

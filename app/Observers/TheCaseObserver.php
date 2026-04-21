@@ -19,8 +19,8 @@ class TheCaseObserver
      */
     public function created(TheCase $theCase): void
     {
-        app(\App\Repositories\TheCaseRepository::class)->recordFeatureUsage('total-cases');
-        Notification::send(User::role('Admin')->where('id', '!=', auth()->id())->get(), new NewCaseNotification("New case added", auth()->user(), $theCase));
+        // app(\App\Repositories\TheCaseRepository::class)->recordFeatureUsage('total-cases');
+        // Notification::send(User::role('Admin')->where('id', '!=', auth()->id())->get(), new NewCaseNotification("New case added", auth()->user(), $theCase));
     }
 
     /**

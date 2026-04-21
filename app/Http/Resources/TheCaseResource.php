@@ -16,13 +16,14 @@ class TheCaseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'AutoNumber' => $this->AutoNumber,
             'code' => $this->code,
             'case_number' => $this->case_number,
-            'type' => $this->type,
-            'status' => $this->status,
             'subject' => $this->subject,
-            'court' => $this->court,
+            'type_id' => $this->type_id,
+            'status_id' => $this->status_id,
+            'contract_id' => $this->contract_id,
+            'created_by' => $this->created_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at
         ];

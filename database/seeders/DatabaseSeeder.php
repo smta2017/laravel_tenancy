@@ -26,6 +26,25 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             SubscriptionsSeeder::class,
+
+            CaseStatesTableSeeder::class,
+            CaseTypesTableSeeder::class,
+            
+            BandsTableSeeder::class,
+            ContractsTableSeeder::class,
+            ContractBandsTableSeeder::class,
+            
+            LitigationAuthorityTypesTableSeeder::class,
+            LitigationLevelsTableSeeder::class,
+            
+            TheCasesTableSeeder::class,
+            
+            
+            AttributeOpponentsTableSeeder::class,
+            ClientsTableSeeder::class,
+
+            CaseDetailsTableSeeder::class,
+            CaseDetailsClientsTableSeeder::class,
             // TheCasesTableSeeder::class,
             // TesureSeeder::class,
             // CentralUserSeeder::class,

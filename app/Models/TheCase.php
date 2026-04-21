@@ -10,30 +10,47 @@ class TheCase extends Model
 
     public $fillable = [
         'id',
-        'name',
+        'AutoNumber',
         'code',
         'case_number',
-        'type',
-        'status',
         'subject',
-        'court',
+        'type_id',
+        'status_id',
+        'contract_id',
+        'created_by',
         'created_at',
         'updated_at'
     ];
 
     protected $casts = [
-        'name' => 'string',
+        'AutoNumber' => 'string',
         'code' => 'string',
         'case_number' => 'string',
-        'type' => 'string',
-        'status' => 'integer',
-        'subject' => 'string',
-        'court' => 'string'
+        'subject' => 'string'
     ];
 
     public static array $rules = [
-        'name' => 'required'
+        'AutoNumber' => 'required',
+        'contract_id' => 'required'
     ];
 
-    
+    public function type(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(\App\Models\CaseType::class, 'type_id', 'id');
+    }
+
+    public function status(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(\App\Models\CaseState::class, 'status_id', 'id');
+    }
+
+    public function contract(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(\App\Models\Contract::class, 'contract_id', 'id');
+    }
+
+    public function createdBy(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by', 'id');
+    }
 }
