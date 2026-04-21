@@ -1,0 +1,39 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "contract_id",
+        "dbType": "foreignId:constrained,'contracts':nullable",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Contract,contract_id,id",
+        "searchable": true
+    },
+    {
+        "name": "band_id",
+        "dbType": "foreignId:constrained,'bands':nullable",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Band,band_id,id",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

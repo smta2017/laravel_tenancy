@@ -1,0 +1,47 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "case_details_id",
+        "dbType": "foreignId:constrained,'case_details':nullable",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,CaseDetails,case_details_id,id",
+        "searchable": true
+    },
+     {
+        "name": "client_id",
+        "dbType": "foreignId:constrained,'clients':nullable",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,Client,client_id,id",
+        "searchable": true
+    },
+    {
+        "name": "attribute_opponent_id",
+        "dbType": "foreignId:constrained,'attribute_opponents':nullable",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,AttributeOpponent,attribute_opponent_id,id",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

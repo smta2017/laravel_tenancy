@@ -1,0 +1,43 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "name",
+        "dbType": "string:nullable",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "type",
+        "dbType": "foreignId:constrained,'litigation_authority_types':nullable",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,LitigationAuthorityType,type,id",
+        "searchable": true
+    },
+    {
+        "name": "location",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

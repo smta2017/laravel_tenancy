@@ -7,51 +7,69 @@
         "searchable": false
     },
     {
-        "name": "AutoNumber",
-        "dbType": "string:nullable",
-        "validations": "required",
-        "searchable": true
-    },
-    {
-        "name": "code",
-        "dbType": "string:nullable",
+        "name": "case_id",
+        "dbType": "foreignId:constrained,'the_cases':nullable",
         "validations": "",
+        "htmlType": "",
+        "relation": "mt1,TheCase,case_id,id",
         "searchable": true
     },
     {
+        "name": "litigation_level_id",
+        "dbType": "foreignId:constrained,'litigation_levels':nullable",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,LitigationLevel,litigation_level_id,id",
+        "searchable": true
+    },
+    {   
         "name": "case_number",
         "dbType": "string:nullable",
         "validations": "",
         "searchable": true
     },
     {
-        "name": "subject",
+        "name": "circle",
         "dbType": "string:nullable",
         "validations": "",
         "searchable": true
     },
     {
-        "name": "type_id",
-        "dbType": "foreignId:constrained,'case_types':nullable",
+        "name": "floor",
+        "dbType": "string:nullable",
         "validations": "",
-        "htmlType": "",
-        "relation": "mt1,CaseType,type_id,id",
         "searchable": true
     },
     {
-        "name": "status_id",
-        "dbType": "foreignId:constrained,'case_states':nullable",
+        "name": "hall",
+        "dbType": "string:nullable",
         "validations": "",
-        "htmlType": "",
-        "relation": "mt1,CaseState,status_id,id",
         "searchable": true
     },
     {
-        "name": "contract_id",
-        "dbType": "foreignId:constrained,'contracts':nullable",
-        "validations": "required",
+        "name": "secretary",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "litigation_authority_id",
+        "dbType": "foreignId:constrained,'litigation_authorities':nullable",
+        "validations": "",
         "htmlType": "",
-        "relation": "mt1,Contract,contract_id,id",
+        "relation": "mt1,LitigationAuthority,litigation_authority_id,id",
+        "searchable": true
+    },
+    {
+        "name": "gedge",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "is_active",
+        "dbType": "boolean:nullable",
+        "validations": "",
         "searchable": true
     },
     {

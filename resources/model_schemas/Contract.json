@@ -7,20 +7,14 @@
         "searchable": false
     },
     {
-        "name": "AutoNumber",
+        "name": "name",
         "dbType": "string:nullable",
         "validations": "required",
         "searchable": true
     },
     {
-        "name": "code",
-        "dbType": "string:nullable",
-        "validations": "",
-        "searchable": true
-    },
-    {
-        "name": "case_number",
-        "dbType": "string:nullable",
+        "name": "amount",
+        "dbType": "decimal:nullable",
         "validations": "",
         "searchable": true
     },
@@ -31,27 +25,9 @@
         "searchable": true
     },
     {
-        "name": "type_id",
-        "dbType": "foreignId:constrained,'case_types':nullable",
+        "name": "location",
+        "dbType": "string:nullable",
         "validations": "",
-        "htmlType": "",
-        "relation": "mt1,CaseType,type_id,id",
-        "searchable": true
-    },
-    {
-        "name": "status_id",
-        "dbType": "foreignId:constrained,'case_states':nullable",
-        "validations": "",
-        "htmlType": "",
-        "relation": "mt1,CaseState,status_id,id",
-        "searchable": true
-    },
-    {
-        "name": "contract_id",
-        "dbType": "foreignId:constrained,'contracts':nullable",
-        "validations": "required",
-        "htmlType": "",
-        "relation": "mt1,Contract,contract_id,id",
         "searchable": true
     },
     {

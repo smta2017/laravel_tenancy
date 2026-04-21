@@ -1,0 +1,39 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "client_id",
+        "dbType": "foreignId:constrained,'clients':nullable",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Client,client_id,id",
+        "searchable": true
+    },
+    {
+        "name": "attach_id",
+        "dbType": "foreignId:constrained,'attaches':nullable",
+        "validations": "required",
+        "htmlType": "",
+        "relation": "mt1,Attach,attach_id,id",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

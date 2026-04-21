@@ -1,0 +1,41 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "name",
+        "dbType": "string:nullable",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "type",
+        "dbType": "string:nullable",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "path",
+        "dbType": "string:nullable",
+        "validations": "required",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]

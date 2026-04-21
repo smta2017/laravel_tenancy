@@ -11,7 +11,7 @@ return [
 
     'path' => [
 
-        'migration'         => database_path('migrations/'),
+        'migration'         => database_path('migrations/tenant/'),
 
         'model'             => app_path('Models/'),
 

@@ -1,0 +1,43 @@
+[
+    {
+        "name": "id",
+        "dbType": "id",
+        "htmlType": "",
+        "validations": "",
+        "searchable": false
+    },
+    {
+        "name": "title",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "subject",
+        "dbType": "string:nullable",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "created_by",
+        "dbType": "foreignId:constrained,'users':nullable",
+        "validations": "",
+        "htmlType": "",
+        "relation": "mt1,User,created_by,id",
+        "searchable": true
+    },
+    {
+        "name": "created_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    },
+    {
+        "name": "updated_at",
+        "dbType": "timestamp",
+        "htmlType": "",
+        "validations": "",
+        "searchable": true
+    }
+]
