@@ -25,7 +25,8 @@ class TheCaseResource extends JsonResource
             'contract_id' => $this->contract_id,
             'created_by' => $this->created_by,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+            'case_details' => CaseDetailsResource::collection($this->whenLoaded('caseDetails'))
         ];
     }
 }

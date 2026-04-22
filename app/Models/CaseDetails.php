@@ -58,4 +58,9 @@ class CaseDetails extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'created_by', 'id');
     }
+
+    public function clients(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\CaseDetailsClient::class, 'case_details_id', 'id');
+    }
 }

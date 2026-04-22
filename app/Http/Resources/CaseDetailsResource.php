@@ -28,7 +28,10 @@ class CaseDetailsResource extends JsonResource
             'is_active' => $this->is_active,
             'created_by' => $this->created_by,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'updated_at' => $this->updated_at,
+            'clients' => CaseDetailsClientResource::collection($this->whenLoaded('clients')),
+            'litigation_authority' => new LitigationAuthorityResource($this->whenLoaded('litigationAuthority')),
+            'litigation_level' => new LitigationLevelResource($this->whenLoaded('litigationLevel'))
         ];
     }
 }

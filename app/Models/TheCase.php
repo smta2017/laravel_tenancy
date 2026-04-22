@@ -53,4 +53,9 @@ class TheCase extends Model
     {
         return $this->belongsTo(\App\Models\User::class, 'created_by', 'id');
     }
+
+    public function caseDetails(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\CaseDetails::class, 'case_id', 'id');
+    }
 }
