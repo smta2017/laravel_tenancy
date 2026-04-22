@@ -36,6 +36,10 @@ class TheCaseAPIController extends AppBaseController
             $request->get('limit')
         );
 
+        if ($request->has('with')) {
+            $theCases->load(explode(',', $request->get('with')));
+        }
+
         return $this->sendResponse(
             TheCaseResource::collection($theCases),
             __('messages.retrieved', ['model' => __('models/theCases.plural')])
@@ -62,7 +66,7 @@ class TheCaseAPIController extends AppBaseController
      * Display the specified TheCase.
      * GET|HEAD /the-cases/{id}
      */
-    public function show($id): JsonResponse
+    public function show($id, Request $request): JsonResponse
     {
         /** @var TheCase $theCase */
         $theCase = $this->theCaseRepository->find($id);
@@ -71,6 +75,13 @@ class TheCaseAPIController extends AppBaseController
             return $this->sendError(
                 __('messages.not_found', ['model' => __('models/theCases.singular')])
             );
+        }
+
+        if ($request->has('with')) {
+            $theCase->load(explode(',', $request->get('with')));
+        } else {
+            // Best practice: Standardize returning details for single view
+            $theCase->load(['caseDetails.clients']);
         }
 
         return $this->sendResponse(
