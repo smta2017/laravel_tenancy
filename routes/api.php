@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
     Route::delete('/notifications/{id}', [NotificationController::class, 'destroy']);
     Route::get('/notifications', [NotificationController::class, 'index']);
+    Route::get('/translations', [\App\Http\Controllers\API\TranslationController::class, 'index']);
 });
 
 Route::post('/send-otp', [RegisterController::class, 'sendotp']);

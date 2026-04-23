@@ -133,6 +133,7 @@ Route::middleware([
 
             Route::resource('case-details-clients', App\Http\Controllers\API\CaseDetailsClientAPIController::class)
                 ->except(['create', 'edit']);
+            Route::get('/translations', [\App\Http\Controllers\API\TranslationController::class, 'index']);
         });
     });
     //====================================[ END - A P I  ]==============================================
