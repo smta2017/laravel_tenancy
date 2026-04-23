@@ -87,6 +87,7 @@ Route::middleware([
             // Subscription Management
             Route::get('/available-plans', [TenantSubscriptionController::class, 'availablePlans']);
             Route::post('/upgrade-plan', [TenantSubscriptionController::class, 'upgradePlan']);
+            Route::get('/translations', [\App\Http\Controllers\API\TranslationController::class, 'index']);
         });
     });
     //====================================[ END - A P I  ]==============================================
