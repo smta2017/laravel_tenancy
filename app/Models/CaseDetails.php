@@ -63,4 +63,9 @@ class CaseDetails extends Model
     {
         return $this->hasMany(\App\Models\CaseDetailsClient::class, 'case_details_id', 'id');
     }
+
+    public function events(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(\App\Models\CaseDetailEvent::class, 'case_details_id', 'id');
+    }
 }

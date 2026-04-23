@@ -45,6 +45,10 @@ class DatabaseSeeder extends Seeder
 
             CaseDetailsTableSeeder::class,
             CaseDetailsClientsTableSeeder::class,
+
+            EventStatesTableSeeder::class,
+            EventTypesTableSeeder::class,
+            CaseDetailEventsTableSeeder::class,
             // TheCasesTableSeeder::class,
             // TesureSeeder::class,
             // CentralUserSeeder::class,

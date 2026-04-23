@@ -31,7 +31,8 @@ class CaseDetailsResource extends JsonResource
             'updated_at' => $this->updated_at,
             'clients' => CaseDetailsClientResource::collection($this->whenLoaded('clients')),
             'litigation_authority' => new LitigationAuthorityResource($this->whenLoaded('litigationAuthority')),
-            'litigation_level' => new LitigationLevelResource($this->whenLoaded('litigationLevel'))
+            'litigation_level' => new LitigationLevelResource($this->whenLoaded('litigationLevel')),
+            'events' => CaseDetailEventResource::collection($this->whenLoaded('events'))
         ];
     }
 }
