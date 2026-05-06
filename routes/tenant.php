@@ -180,6 +180,15 @@ Route::middleware([
 
             Route::resource('case-details-clients', App\Http\Controllers\API\CaseDetailsClientAPIController::class)
                 ->except(['create', 'edit']);
+
+            Route::resource('event-states', App\Http\Controllers\API\EventStateAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('event-types', App\Http\Controllers\API\EventTypeAPIController::class)
+                ->except(['create', 'edit']);
+
+            Route::resource('case-detail-events', App\Http\Controllers\API\CaseDetailEventAPIController::class)
+                ->except(['create', 'edit']);
         });
     });
     //====================================[ END - A P I  ]==============================================

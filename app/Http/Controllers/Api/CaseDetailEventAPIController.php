@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use App\Http\Resources\CaseDetailEventResource;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class CaseDetailEventAPIController
@@ -49,6 +50,7 @@ class CaseDetailEventAPIController extends AppBaseController
     public function store(CreateCaseDetailEventAPIRequest $request): JsonResponse
     {
         $input = $request->all();
+        $input['created_by'] = Auth::id();
 
         $caseDetailEvent = $this->caseDetailEventRepository->create($input);
 
