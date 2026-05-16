@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('event_types', function (Blueprint $table) {
             $table->id('id');
             $table->string('name')->nullable();
+            $table->string('color')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

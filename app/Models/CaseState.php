@@ -11,16 +11,19 @@ class CaseState extends Model
     public $fillable = [
         'id',
         'name',
+        'color',
         'created_at',
         'updated_at'
     ];
 
     protected $casts = [
-        'name' => 'string'
+        'name' => 'string',
+        'color' => 'string'
     ];
 
     public static array $rules = [
-        'name' => 'required'
+        'name' => 'required',
+        'color' => 'nullable|string'
     ];
 
     
